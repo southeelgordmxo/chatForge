@@ -39,7 +39,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en" suppressHydrationWarning>
-        <body className={`${lato.className} antialiased`}>
+        <body className={`${lato.className} antialiased dark:bg-[#0d0d0f]`}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"
