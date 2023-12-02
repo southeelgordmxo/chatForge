@@ -3,6 +3,7 @@ import { Lato } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { ThemeProvider } from "@/components/theme-provider";
+import ModalProvider from "@/components/providers/modal-provider";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -47,6 +48,7 @@ export default function RootLayout({
             disableTransitionOnChange
             storageKey="chatforge-theme"
           >
+            <ModalProvider />
             {children}
           </ThemeProvider>
         </body>

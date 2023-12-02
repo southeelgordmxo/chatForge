@@ -7,7 +7,7 @@ import { ScrollArea } from "../ui/scroll-area";
 import NavigationItem from "./navigation-item";
 import { ModeToggle } from "../mode-toggle";
 
-const navigationSidebar = async () => {
+const NavigationSidebar = async () => {
   const profile = await authProfile();
 
   if (!profile) {
@@ -54,4 +54,4 @@ const navigationSidebar = async () => {
   );
 };
 
-export default navigationSidebar;
+export default NavigationSidebar;
