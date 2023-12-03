@@ -19,7 +19,8 @@ import {
   User,
   UserPlus,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useModal } from "@/hook/use-modal-store";
 
 interface ServerHeaderProps {
   server: ServerWithChannelAndMembers;
@@ -28,8 +29,18 @@ interface ServerHeaderProps {
 
 const ServerHeader = ({ role, server }: ServerHeaderProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const { onOpen } = useModal();
+  const [isMounted, setIsMounted] = useState(false);
   const isAdmin = role === MemberType.ADMIN;
   const isModerator = isAdmin || role === MemberType.MODERATOR;
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
@@ -41,7 +52,12 @@ const ServerHeader = ({ role, server }: ServerHeaderProps) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-60 font-medium space-y-[3px] p-0">
         {isModerator && (
-          <DropdownMenuItem className="text-base text-indigo-600 px-4 py-2 cursor-pointer">
+          <DropdownMenuItem
+            onClick={() => {
+              onOpen("inviteServer", { server });
+            }}
+            className="text-base text-indigo-600 px-4 py-2 cursor-pointer"
+          >
             Invite people
             <UserPlus className="w-5 h-5 ml-auto" />
           </DropdownMenuItem>
