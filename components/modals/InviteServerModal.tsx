@@ -61,7 +61,7 @@ const InviteServerModal = () => {
         <DialogHeader>
           <DialogTitle className="text-xl md:text-2xl flex items-center gap-2 justify-center">
             Invite Friends
-            <UserPlus className="w-7 h-7 md:w-9 md:h-9 text-indigo-500" />
+            <UserPlus className="w-6 h-6 md:w-9 md:h-9 text-indigo-500" />
           </DialogTitle>
           <DialogDescription className="text-center text-lg">
             Invite your friends to your server to extend network and

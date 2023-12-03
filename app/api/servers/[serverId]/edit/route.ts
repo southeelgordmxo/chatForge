@@ -1,7 +1,6 @@
 import { authProfile } from "@/lib/auth-profile";
 import { db } from "@/lib/db.prisma";
 import { NextRequest, NextResponse } from "next/server";
-import { v4 as UUID4 } from "uuid";
 
 export async function PATCH(
   req: NextRequest,

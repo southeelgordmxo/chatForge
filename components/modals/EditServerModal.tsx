@@ -21,7 +21,7 @@ import {
 import { Input } from "@/components/ui/input";
 import FileUpload from "@/components/file-upload";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Save, Wrench } from "lucide-react";
+import { Loader2, Save, Wrench } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
@@ -93,8 +93,9 @@ const EditServerModal = () => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-xl md:text-2xl flex items-center gap-2 justify-center line-clamp-1">
-            Editing Server&apos;s{server?.name}{" "}
-            <Wrench className="w-7 h-7 md:w-9 md:h-9 text-yellow-500" />
+            Editing Server&apos;s{" "}
+            <span className="text-indigo-500/90">{server?.name}</span>{" "}
+            <Wrench className="w-6 h-6 md:w-9 md:h-9 text-yellow-500" />
           </DialogTitle>
           <DialogDescription className="text-center text-lg">
             Edit your server! Change name or image.
@@ -129,7 +130,7 @@ const EditServerModal = () => {
                 <FormItem>
                   <FormLabel>Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="Hello World" {...field} />
+                    <Input placeholder="e.g Hello World" {...field} />
                   </FormControl>
                   <FormDescription>Give server a name</FormDescription>
                   <FormMessage />
@@ -141,13 +142,15 @@ const EditServerModal = () => {
                 disabled={isLoading}
                 type="submit"
                 variant={"primary"}
-                className="flex items-center gap-1 text-lg"
+                className="flex items-center gap-1"
               >
                 {isLoading ? (
-                  <>Saving...</>
+                  <>
+                    Saving... <Loader2 className="animate-spin w-5 h-5" />{" "}
+                  </>
                 ) : (
                   <>
-                    Save <Save />
+                    Save <Save className="w-5 h-5" />
                   </>
                 )}
               </Button>
