@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { channelIcons } from "./server-sidebar";
 import ActionTooltip from "../action-tooltip";
 import { Edit, Lock, Trash } from "lucide-react";
+import { useModal } from "@/hook/use-modal-store";
 
 interface ServerChannelProps {
   channel: Channel;
@@ -15,6 +16,7 @@ interface ServerChannelProps {
 
 const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
   const params = useParams();
+  const { onOpen } = useModal();
   return (
     <button
       className={cn(
@@ -24,7 +26,7 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
     >
       <p
         className={cn(
-          "font-semibold flex items-center text-zinc-300 group-hover:text-zinc-100",
+          "font-semibold line-clamp-1 flex items-center text-zinc-300 group-hover:text-zinc-100",
           params.channelId === channel.id && "text-zinc-100"
         )}
       >
@@ -34,7 +36,10 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
       {role !== MemberType.GUEST && channel.name !== "general" && (
         <div className="flex items-center gap-x-[2px] ml-auto">
           <ActionTooltip description="Edit" align="center" side="top">
-            <Edit className="hidden group-hover:block w-4 h-4 transition-all text-zinc-300 hover:text-zinc-100" />
+            <Edit
+              className="hidden group-hover:block w-4 h-4 transition-all text-zinc-300 hover:text-zinc-100"
+              onClick={() => onOpen("editChannel", { channel, server })}
+            />
           </ActionTooltip>
           <ActionTooltip description="Delete" align="center" side="top">
             <Trash className="hidden group-hover:block w-4 h-4 transition-all text-red-500/80 hover:text-red-500" />

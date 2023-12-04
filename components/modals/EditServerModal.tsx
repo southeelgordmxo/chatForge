@@ -27,6 +27,7 @@ import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hook/use-modal-store";
 import { useEffect, useState } from "react";
+import { toast } from "../ui/use-toast";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -73,9 +74,13 @@ const EditServerModal = () => {
       form.reset();
       router.refresh();
       onClose();
+      toast({
+        title: "Successfully edited the Server",
+      });
     } else {
-      //! change with toast for notification
-      console.log(resData.error);
+      toast({
+        title: resData.error,
+      });
     }
   }
 

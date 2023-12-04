@@ -28,7 +28,7 @@ const ServerMembers = ({ member, server, role }: ServerMembersProps) => {
       />
       <p
         className={cn(
-          "font-semibold ml-2 flex items-center gap-x-[2px] text-zinc-300 group-hover:text-zinc-100",
+          "font-semibold line-clamp-1  ml-2 flex items-center gap-x-[2px] text-zinc-300 group-hover:text-zinc-100",
           params.memberId === member.id && "text-zinc-100"
         )}
       >
