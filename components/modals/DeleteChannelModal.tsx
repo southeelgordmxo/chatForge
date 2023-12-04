@@ -60,11 +60,11 @@ const DeleteChannelModal = () => {
           </DialogTitle>
           <DialogDescription className="text-center text-lg">
             <p>
-              Are you sure you want to delete the server&apos;s{" "}
-              <span className="text-indigo-500">{server?.name}</span> <br />
+              Are you sure you want to delete the channel&apos;s{" "}
+              <span className="text-indigo-500">{channel?.name}</span> <br />
             </p>
             <h3 className="text-red-500 text-center">
-              This will delete permanently the server!
+              This will delete permanently the channel!
             </h3>
           </DialogDescription>
           <div className="flex flex-col items-start">

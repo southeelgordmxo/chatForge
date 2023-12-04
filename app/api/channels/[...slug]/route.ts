@@ -51,6 +51,19 @@ export async function PATCH(
       );
     }
 
+    if (name === "general") {
+      return new NextResponse(
+        JSON.stringify({
+          success: false,
+          error: "Channel name could not be general!",
+        }),
+        {
+          status: 400,
+          statusText: "Bad Request",
+        }
+      );
+    }
+
     const server = await db.server.update({
       where: {
         id: params.slug["1"],
@@ -72,6 +85,99 @@ export async function PATCH(
             data: {
               name,
               type,
+            },
+          },
+        },
+      },
+    });
+
+    return new NextResponse(
+      JSON.stringify({
+        success: true,
+        data: server,
+      }),
+      {
+        status: 200,
+      }
+    );
+  } catch (e: any) {
+    return new NextResponse(
+      JSON.stringify({
+        success: false,
+        error: "Something went wrong with server!",
+      }),
+      {
+        status: 500,
+        statusText: "Internal server error",
+      }
+    );
+  }
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { slug: ["channelId", "serverId"] } }
+) {
+  try {
+    const profile = await authProfile();
+
+    if (!profile) {
+      return new NextResponse(
+        JSON.stringify({
+          success: false,
+          error: "Unauthorized user!",
+        }),
+        {
+          status: 401,
+          statusText: "Unauthorized",
+        }
+      );
+    }
+
+    if (!params.slug["0"]) {
+      return new NextResponse(
+        JSON.stringify({
+          success: false,
+          error: "Missing channel id!",
+        }),
+        {
+          status: 400,
+          statusText: "Bad Request",
+        }
+      );
+    }
+
+    if (!params.slug["1"]) {
+      return new NextResponse(
+        JSON.stringify({
+          success: false,
+          error: "Missing server id!",
+        }),
+        {
+          status: 400,
+          statusText: "Bad Request",
+        }
+      );
+    }
+
+    const server = await db.server.update({
+      where: {
+        id: params.slug["1"],
+        members: {
+          some: {
+            profileId: profile.id,
+            role: {
+              in: [MemberType.MODERATOR, MemberType.ADMIN],
+            },
+          },
+        },
+      },
+      data: {
+        channels: {
+          delete: {
+            id: params.slug["0"],
+            name: {
+              not: "general",
             },
           },
         },
