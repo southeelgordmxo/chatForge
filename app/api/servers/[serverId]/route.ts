@@ -68,3 +68,70 @@ export async function PATCH(
     );
   }
 }
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: { serverId: string } }
+) {
+  try {
+    const profile = await authProfile();
+
+    if (!profile) {
+      return new NextResponse(
+        JSON.stringify({
+          success: false,
+          error: "Unauthorized user!",
+        }),
+        {
+          status: 401,
+          statusText: "Unauthorized",
+        }
+      );
+    }
+
+    if (!params.serverId) {
+      return new NextResponse(
+        JSON.stringify({
+          success: false,
+          error: "Missing server id!",
+        }),
+        {
+          status: 400,
+          statusText: "Bad Request",
+        }
+      );
+    }
+
+    await db.server.delete({
+      where: {
+        id: params.serverId,
+        profileId: profile.id,
+        members: {
+          some: {
+            profileId: profile.id,
+          },
+        },
+      },
+    });
+
+    return new NextResponse(
+      JSON.stringify({
+        success: true,
+      }),
+      {
+        status: 200,
+      }
+    );
+  } catch (e: any) {
+    return new NextResponse(
+      JSON.stringify({
+        success: false,
+        error: "Something went wrong with server!",
+      }),
+      {
+        status: 500,
+        statusText: "Internal server error",
+      }
+    );
+  }
+}

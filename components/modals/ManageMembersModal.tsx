@@ -143,95 +143,96 @@ const ManageMembersModal = () => {
           </DialogTitle>
           <DialogDescription className="text-center text-lg">
             <p className="flex items-center justify-center">
-              {server?.members.length} Members{" "}
+              {server?.members && server?.members.length} Members{" "}
               <Users className="w-5 h-5 ml-2" />
             </p>
           </DialogDescription>
         </DialogHeader>
         <ScrollArea className="max-h-[450px]">
-          {server?.members.map((member) => (
-            <div key={member.id} className="flex items-center my-4">
-              <UserItem
-                checkFullName={checkFullName}
-                email={member.profile.email}
-                imageUrl={member.profile.imageUrl}
-                name={member.profile.name}
-                role={member.role}
-              />
-              {server.profileId !== member.profileId &&
-                loadingId !== member.id && (
-                  <DropdownMenu>
-                    <DropdownMenuTrigger className="ml-auto ">
-                      <ActionTooltip
-                        description="edit"
-                        align="center"
-                        side="top"
-                      >
-                        <MoreVertical className="w-5 h-5 cursor-pointer" />
-                      </ActionTooltip>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent side="left">
-                      <DropdownMenuSub>
-                        <DropdownMenuSubTrigger className="cursor-pointer">
-                          Role <ShieldQuestion className="w-5 h-5 ml-1" />
-                        </DropdownMenuSubTrigger>
-                        <DropdownMenuPortal>
-                          <DropdownMenuSubContent>
-                            <DropdownMenuItem
-                              className="cursor-pointer"
-                              onClick={() =>
-                                onRoleChange({
-                                  memberId: member.id,
-                                  serverId: server.id,
-                                  role: "GUEST",
-                                })
-                              }
-                            >
-                              Guest <Shield className="w-5 h-5 ml-1 mr-8" />
-                              {member.role === "GUEST" && (
-                                <Check className="w-5 h-5 ml-auto" />
-                              )}
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              className="cursor-pointer"
-                              onClick={() =>
-                                onRoleChange({
-                                  memberId: member.id,
-                                  serverId: server.id,
-                                  role: "MODERATOR",
-                                })
-                              }
-                            >
-                              Moderator{" "}
-                              <ShieldCheck className="w-5 h-5 ml-1 mr-8" />
-                              {member.role === "MODERATOR" && (
-                                <Check className="w-5 h-5 ml-auto" />
-                              )}
-                            </DropdownMenuItem>
-                          </DropdownMenuSubContent>
-                        </DropdownMenuPortal>
-                      </DropdownMenuSub>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem
-                        className="cursor-pointer"
-                        onClick={() => {
-                          onKickMembers({
-                            memberId: member.id,
-                            serverId: server.id,
-                          });
-                        }}
-                      >
-                        Kick off{" "}
-                        <Gavel className="w-5 h-5 ml-1 text-red-500/80" />
-                      </DropdownMenuItem>
-                    </DropdownMenuContent>
-                  </DropdownMenu>
+          {server?.members &&
+            server?.members.map((member) => (
+              <div key={member.id} className="flex items-center my-4">
+                <UserItem
+                  checkFullName={checkFullName}
+                  email={member.profile.email}
+                  imageUrl={member.profile.imageUrl}
+                  name={member.profile.name}
+                  role={member.role}
+                />
+                {server.profileId !== member.profileId &&
+                  loadingId !== member.id && (
+                    <DropdownMenu>
+                      <DropdownMenuTrigger className="ml-auto ">
+                        <ActionTooltip
+                          description="edit"
+                          align="center"
+                          side="top"
+                        >
+                          <MoreVertical className="w-5 h-5 cursor-pointer" />
+                        </ActionTooltip>
+                      </DropdownMenuTrigger>
+                      <DropdownMenuContent side="left">
+                        <DropdownMenuSub>
+                          <DropdownMenuSubTrigger className="cursor-pointer">
+                            Role <ShieldQuestion className="w-5 h-5 ml-1" />
+                          </DropdownMenuSubTrigger>
+                          <DropdownMenuPortal>
+                            <DropdownMenuSubContent>
+                              <DropdownMenuItem
+                                className="cursor-pointer"
+                                onClick={() =>
+                                  onRoleChange({
+                                    memberId: member.id,
+                                    serverId: server.id,
+                                    role: "GUEST",
+                                  })
+                                }
+                              >
+                                Guest <Shield className="w-5 h-5 ml-1 mr-8" />
+                                {member.role === "GUEST" && (
+                                  <Check className="w-5 h-5 ml-auto" />
+                                )}
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="cursor-pointer"
+                                onClick={() =>
+                                  onRoleChange({
+                                    memberId: member.id,
+                                    serverId: server.id,
+                                    role: "MODERATOR",
+                                  })
+                                }
+                              >
+                                Moderator{" "}
+                                <ShieldCheck className="w-5 h-5 ml-1 mr-8" />
+                                {member.role === "MODERATOR" && (
+                                  <Check className="w-5 h-5 ml-auto" />
+                                )}
+                              </DropdownMenuItem>
+                            </DropdownMenuSubContent>
+                          </DropdownMenuPortal>
+                        </DropdownMenuSub>
+                        <DropdownMenuSeparator />
+                        <DropdownMenuItem
+                          className="cursor-pointer"
+                          onClick={() => {
+                            onKickMembers({
+                              memberId: member.id,
+                              serverId: server.id,
+                            });
+                          }}
+                        >
+                          Kick off{" "}
+                          <Gavel className="w-5 h-5 ml-1 text-red-500/80" />
+                        </DropdownMenuItem>
+                      </DropdownMenuContent>
+                    </DropdownMenu>
+                  )}
+                {loadingId === member.id && (
+                  <Loader2 className="animate-spin w-5 h-5 ml-auto" />
                 )}
-              {loadingId === member.id && (
-                <Loader2 className="animate-spin w-5 h-5 ml-auto" />
-              )}
-            </div>
-          ))}
+              </div>
+            ))}
         </ScrollArea>
       </DialogContent>
     </Dialog>
