@@ -95,7 +95,7 @@ const EditServerModal = () => {
           <DialogTitle className="text-xl md:text-2xl flex items-center gap-2 justify-center line-clamp-1">
             Editing Server&apos;s{" "}
             <span className="text-indigo-500/90">{server?.name}</span>{" "}
-            <Wrench className="w-6 h-6 md:w-9 md:h-9 text-yellow-500" />
+            <Wrench className="w-5 h-5 md:w-9 md:h-9 text-yellow-500" />
           </DialogTitle>
           <DialogDescription className="text-center text-lg">
             Edit your server! Change name or image.

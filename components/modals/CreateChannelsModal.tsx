@@ -103,7 +103,7 @@ const CreateChannelsModal = () => {
         <DialogHeader>
           <DialogTitle className="text-xl md:text-2xl flex items-center gap-2 justify-center">
             Create Amazing Channel{" "}
-            <Box className="w-6 h-6 md:w-9 md:h-9 text-indigo-500" />
+            <Box className="w-5 h-5 md:w-9 md:h-9 text-indigo-500" />
           </DialogTitle>
           <DialogDescription className="text-center text-lg">
             Create channel to organize friends and do collaborative works

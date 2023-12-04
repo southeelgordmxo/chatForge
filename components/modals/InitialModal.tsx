@@ -87,7 +87,7 @@ const InitialModal = () => {
         <DialogHeader>
           <DialogTitle className="text-xl md:text-2xl flex items-center gap-2 justify-center">
             Create Awesome Server{" "}
-            <Boxes className="w-6 h-6 md:w-9 md:h-9 text-indigo-500" />
+            <Boxes className="w-5 h-5 md:w-9 md:h-9 text-indigo-500" />
           </DialogTitle>
           <DialogDescription className="text-center text-lg">
             Customize your awesome server with a standing name and an remarkable

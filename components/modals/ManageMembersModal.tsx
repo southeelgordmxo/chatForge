@@ -139,7 +139,7 @@ const ManageMembersModal = () => {
         <DialogHeader>
           <DialogTitle className="text-xl md:text-2xl flex items-center gap-2 justify-center">
             Manage members{" "}
-            <UserRoundCog className="w-6 h-6 md:w-9 md:h-9 text-sky-500" />
+            <UserRoundCog className="w-5 h-5 md:w-9 md:h-9 text-sky-500" />
           </DialogTitle>
           <DialogDescription className="text-center text-lg">
             <p className="flex items-center justify-center">
