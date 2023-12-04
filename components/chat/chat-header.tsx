@@ -1,8 +1,6 @@
-// "use client";
 import { Channel, ChannelType, Member } from "@prisma/client";
-import { Hash, Headphones, Menu, Video } from "lucide-react";
+import { Hash, Headphones, Video } from "lucide-react";
 import MobileToggle from "../mobile-toggle";
-import { useEffect, useState } from "react";
 
 interface ChatHeaderProps {
   serverId: string;
@@ -24,15 +22,6 @@ const channelIcons = {
 };
 
 const ChatHeader = ({ channel, serverId, type }: ChatHeaderProps) => {
-  //   const [isMounted, setIsMounted] = useState(false);
-
-  //   useEffect(() => {
-  //     setIsMounted(false);
-  //   }, []);
-
-  //   if (!isMounted) {
-  //     return null;
-  //   }
   return (
     <div className="px-3 flex items-center gap-x-3 h-12 w-full bg-zinc-800 font-semibold">
       <MobileToggle serverId={serverId} />
