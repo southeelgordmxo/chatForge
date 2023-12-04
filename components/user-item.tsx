@@ -10,15 +10,26 @@ interface UserItemProps {
   imageUrl: string;
   email: string;
   role?: MemberType;
+  showEmail?: boolean;
+  showName?: boolean;
 }
 
-const UserItem = ({ email, name, imageUrl, role }: UserItemProps) => {
+const UserItem = ({
+  email,
+  name,
+  imageUrl,
+  role,
+  showEmail = true,
+  showName = true,
+}: UserItemProps) => {
   return (
     <div className="flex items-center">
       <UserAvatar name={name} imageUrl={imageUrl} />
       <div className="ml-2">
         <div className="flex items-center gap-x-2">
-          <h2 className="font-bold text-base">{checkFullName(name)}</h2>
+          {showName && (
+            <h2 className="font-bold text-base">{checkFullName(name)}</h2>
+          )}
           {role === "ADMIN" && (
             <ActionTooltip description="admin" align="center" side="top">
               <ShieldAlert className="text-red-500 w-5 h-5 " />
@@ -35,7 +46,7 @@ const UserItem = ({ email, name, imageUrl, role }: UserItemProps) => {
             </ActionTooltip>
           )}
         </div>
-        <h4 className="text-zinc-400 ">{email}</h4>
+        {showEmail && <h4 className="text-zinc-400 ">{email}</h4>}
       </div>
     </div>
   );

@@ -14,10 +14,33 @@ import {
   ShieldCheck,
   Video,
 } from "lucide-react";
+import ServerSection from "./server-section";
+import ServerChannel from "./server-channel";
+import { Separator } from "../ui/separator";
+import ServerMembers from "./server-member";
 
 interface ServerSidebarProps {
   serverId: string;
 }
+
+export enum ChannelLabel {
+  TEXT_CHANNEL = "Text channels",
+  VOICE_CHANNEL = "Voice channels",
+  VIDEO_CHANNEL = "Video channels",
+  MEMBERS = "Members",
+}
+
+export const channelIcons = {
+  [ChannelType.TEXT]: <Hash className="w-4 h-4 mr-2" />,
+  [ChannelType.AUDIO]: <Headphones className="w-4 h-4 mr-2" />,
+  [ChannelType.VIDEO]: <Video className="w-4 h-4 mr-2" />,
+};
+
+export const memberIcons = {
+  [MemberType.ADMIN]: <ShieldAlert className="w-4 h-4 mr-2 text-red-500" />,
+  [MemberType.MODERATOR]: <ShieldCheck className="w-4 h-4 mr-2 text-sky-500" />,
+  [MemberType.GUEST]: <Shield className="w-4 h-4 mr-2 " />,
+};
 
 const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
   const profile = await authProfile();
@@ -47,20 +70,6 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
       },
     },
   });
-
-  const channelIcons = {
-    [ChannelType.TEXT]: <Hash className="w-4 h-4 mr-2" />,
-    [ChannelType.AUDIO]: <Headphones className="w-4 h-4 mr-2" />,
-    [ChannelType.VIDEO]: <Video className="w-4 h-4 mr-2" />,
-  };
-
-  const memberIcons = {
-    [MemberType.ADMIN]: <ShieldAlert className="w-4 h-4 mr-2 text-red-500" />,
-    [MemberType.MODERATOR]: (
-      <ShieldCheck className="w-4 h-4 mr-2 text-sky-500" />
-    ),
-    [MemberType.GUEST]: <Shield className="w-4 h-4 mr-2 " />,
-  };
 
   if (!server) {
     return redirect("/");
@@ -94,7 +103,7 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
           <ServerSearchItems
             data={[
               {
-                label: "Text channels",
+                label: ChannelLabel.TEXT_CHANNEL,
                 type: "channel",
                 data: textChannel.map((txtCh) => {
                   return {
@@ -105,7 +114,7 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                 }),
               },
               {
-                label: "Voice channels",
+                label: ChannelLabel.VOICE_CHANNEL,
                 type: "channel",
                 data: audioChannel.map((auCh) => {
                   return {
@@ -116,7 +125,7 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                 }),
               },
               {
-                label: "Video channels",
+                label: ChannelLabel.VIDEO_CHANNEL,
                 type: "channel",
                 data: videoChannel.map((viCh) => {
                   return {
@@ -127,7 +136,7 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
                 }),
               },
               {
-                label: "Members",
+                label: ChannelLabel.MEMBERS,
                 type: "member",
                 data: members.map((member) => {
                   return {
@@ -140,6 +149,87 @@ const ServerSidebar = async ({ serverId }: ServerSidebarProps) => {
             ]}
           />
         </div>
+        <Separator className="max-w-[w-58px] h-0.5 mx-auto bg:bg-zinc-700/50 bg-zinc-600/50" />
+        {!!textChannel.length && (
+          <div className="mb-3 mt-2">
+            <ServerSection
+              channelType={ChannelType.TEXT}
+              label={ChannelLabel.TEXT_CHANNEL}
+              role={role}
+              sectionType={"channel"}
+              server={server}
+            />
+            <div className="my-2 flex flex-col items-start gap-y-1">
+              {textChannel.map((channel) => (
+                <ServerChannel
+                  key={channel.id}
+                  channel={channel}
+                  server={server}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+        {!!audioChannel.length && (
+          <div className="mb-3 mt-2">
+            <ServerSection
+              channelType={ChannelType.AUDIO}
+              label={ChannelLabel.VOICE_CHANNEL}
+              role={role}
+              sectionType={"channel"}
+              server={server}
+            />
+            <div className="my-2 flex flex-col items-start gap-y-1">
+              {audioChannel.map((channel) => (
+                <ServerChannel
+                  key={channel.id}
+                  channel={channel}
+                  server={server}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+        {!!videoChannel.length && (
+          <div className="mb-3 mt-2">
+            <ServerSection
+              channelType={ChannelType.VIDEO}
+              label={ChannelLabel.VIDEO_CHANNEL}
+              role={role}
+              sectionType={"channel"}
+              server={server}
+            />
+            <div className="my-2 flex flex-col items-start gap-y-1">
+              {videoChannel.map((channel) => (
+                <ServerChannel
+                  key={channel.id}
+                  channel={channel}
+                  server={server}
+                />
+              ))}
+            </div>
+          </div>
+        )}
+        {!!members.length && (
+          <div className="mb-3 mt-2">
+            <ServerSection
+              server={server}
+              label={ChannelLabel.MEMBERS}
+              role={role}
+              sectionType={"member"}
+            />
+            <div className="my-2 flex flex-col items-start gap-y-1">
+              {members.map((member) => (
+                <ServerMembers
+                  key={member.id}
+                  member={member}
+                  server={server}
+                  role={member.role}
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </ScrollArea>
     </div>
   );

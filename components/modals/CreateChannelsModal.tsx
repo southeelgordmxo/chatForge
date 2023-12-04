@@ -33,6 +33,7 @@ import {
   SelectValue,
 } from "../ui/select";
 import { toast } from "../ui/use-toast";
+import { useEffect } from "react";
 
 const formSchema = z.object({
   name: z
@@ -51,12 +52,12 @@ const formSchema = z.object({
 const CreateChannelsModal = () => {
   const router = useRouter();
   const { isOpen, onClose, type, data } = useModal();
-  const { server } = data;
+  const { server, channelType } = data;
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      type: ChannelType.TEXT,
+      type: channelType || ChannelType.TEXT,
     },
   });
 
@@ -96,6 +97,14 @@ const CreateChannelsModal = () => {
     form.reset();
     onClose();
   }
+
+  useEffect(() => {
+    if (channelType) {
+      form.setValue("type", channelType);
+    } else {
+      form.setValue("type", ChannelType.TEXT);
+    }
+  }, [channelType, form]);
 
   return (
     <Dialog open={isModalOpen} onOpenChange={handleModalClose}>

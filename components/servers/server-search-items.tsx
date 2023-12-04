@@ -12,10 +12,11 @@ import {
 } from "../ui/command";
 import { checkFullName } from "@/lib/helper";
 import { useParams, useRouter } from "next/navigation";
+import { ChannelLabel } from "./server-sidebar";
 
 interface ServerSearchItemsProps {
   data: {
-    label: string;
+    label: ChannelLabel;
     type: "channel" | "member";
     data: {
       id: string;
@@ -26,11 +27,13 @@ interface ServerSearchItemsProps {
 }
 
 const ServerSearchItems = ({ data }: ServerSearchItemsProps) => {
+  const [isMounted, setIsMounted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const params = useParams();
 
   useEffect(() => {
+    setIsMounted(true);
     function down(e: KeyboardEvent) {
       if (e.key === "q" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -57,6 +60,10 @@ const ServerSearchItems = ({ data }: ServerSearchItemsProps) => {
     if (type === "member") {
       return router.push(`/servers/${params.serverId}/members/${id}`);
     }
+  }
+
+  if (!isMounted) {
+    return null;
   }
 
   return (
