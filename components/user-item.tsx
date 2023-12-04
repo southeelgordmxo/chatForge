@@ -3,22 +3,16 @@ import UserAvatar from "./user-avatar";
 import ActionTooltip from "./action-tooltip";
 import { Shield, ShieldAlert, ShieldCheck } from "lucide-react";
 import { MemberType } from "@prisma/client";
+import { checkFullName } from "@/lib/helper";
 
 interface UserItemProps {
   name: string;
   imageUrl: string;
-  checkFullName: (name: string) => string;
   email: string;
   role?: MemberType;
 }
 
-const UserItem = ({
-  checkFullName,
-  email,
-  name,
-  imageUrl,
-  role,
-}: UserItemProps) => {
+const UserItem = ({ email, name, imageUrl, role }: UserItemProps) => {
   return (
     <div className="flex items-center">
       <UserAvatar name={name} imageUrl={imageUrl} />

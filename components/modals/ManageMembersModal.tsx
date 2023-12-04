@@ -9,7 +9,6 @@ import {
 } from "@/components/ui/dialog";
 
 import {
-  Blocks,
   Check,
   Gavel,
   Loader2,
@@ -117,18 +116,6 @@ const ManageMembersModal = () => {
     }
   }
 
-  function checkFullName(name: string) {
-    const nameArr = name.split(" ");
-    let fullName = "";
-
-    nameArr.map((n) => {
-      if (n !== "null") {
-        fullName += `${n} `;
-      }
-    });
-    return fullName.trim();
-  }
-
   if (!isMounted) {
     return false;
   }
@@ -153,7 +140,6 @@ const ManageMembersModal = () => {
             server?.members.map((member) => (
               <div key={member.id} className="flex items-center my-4">
                 <UserItem
-                  checkFullName={checkFullName}
                   email={member.profile.email}
                   imageUrl={member.profile.imageUrl}
                   name={member.profile.name}
