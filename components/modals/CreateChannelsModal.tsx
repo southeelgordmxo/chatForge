@@ -12,43 +12,57 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import FileUpload from "@/components/file-upload";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { BadgePlus, Boxes, Group, Loader2 } from "lucide-react";
+import { BadgePlus, Box, Loader2 } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hook/use-modal-store";
+import { ChannelType } from "@prisma/client";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
+import { toast } from "../ui/use-toast";
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Server name must be at least 2 characters.",
-  }),
-  imageUrl: z.string(),
+  name: z
+    .string({
+      required_error: "Channel name is required!",
+    })
+    .min(2, {
+      message: "Channel name must be at least 2 characters.",
+    })
+    .refine((data) => data !== "general", {
+      message: "Channel name could not be 'general'!",
+    }),
+  type: z.nativeEnum(ChannelType),
 });
 
-const CreateServerModal = () => {
+const CreateChannelsModal = () => {
   const router = useRouter();
-  const { isOpen, onClose, type } = useModal();
-
+  const { isOpen, onClose, type, data } = useModal();
+  const { server } = data;
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
-      imageUrl: "",
+      type: ChannelType.TEXT,
     },
   });
 
   // form submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const res = await fetch("/api/servers", {
+    const res = await fetch(`/api/channels/${server?.id}`, {
       method: "POST",
       body: JSON.stringify(values),
       headers: {
@@ -64,15 +78,19 @@ const CreateServerModal = () => {
       form.reset();
       router.refresh();
       onClose();
+      toast({
+        title: "Successfully created new Channel",
+      });
     } else {
-      //! change with toast for notification
-      console.log();
+      toast({
+        title: resData.error,
+      });
     }
   }
 
   const isLoading = form.formState.isSubmitting;
 
-  const isModalOpen = isOpen && type === "createServer";
+  const isModalOpen = isOpen && type === "createChannels";
 
   function handleModalClose() {
     form.reset();
@@ -84,49 +102,61 @@ const CreateServerModal = () => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-xl md:text-2xl flex items-center gap-2 justify-center">
-            Create Awesome Server{" "}
-            <Boxes className="w-6 h-6 md:w-9 md:h-9 text-indigo-500" />
+            Create Amazing Channel{" "}
+            <Box className="w-6 h-6 md:w-9 md:h-9 text-indigo-500" />
           </DialogTitle>
           <DialogDescription className="text-center text-lg">
-            Customize your awesome server with a standing name and an remarkable
-            image
+            Create channel to organize friends and do collaborative works
+            together
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-            <div className="w-full">
-              <div className="w-full flex justify-center items-center text-center">
-                <FormField
-                  control={form.control}
-                  name="imageUrl"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormControl>
-                        <FileUpload
-                          endpoint="serverUpload"
-                          onChange={field.onChange}
-                          value={field.value}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </div>
-
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Server name</FormLabel>
+                  <FormLabel>Channel name</FormLabel>
                   <FormControl>
                     <Input
-                      placeholder="Hello World"
+                      placeholder="e.g Learning next js"
                       {...field}
                       className="text-base"
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="type"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Channel type</FormLabel>
+                  <Select
+                    disabled={isLoading}
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select channel type" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {Object.values(ChannelType).map((type) => (
+                        <SelectItem
+                          key={type}
+                          value={type}
+                          className="capitalize"
+                        >
+                          {type}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}
@@ -156,4 +186,4 @@ const CreateServerModal = () => {
   );
 };
 
-export default CreateServerModal;
+export default CreateChannelsModal;

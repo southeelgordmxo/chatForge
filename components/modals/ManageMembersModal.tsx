@@ -26,7 +26,7 @@ import { ServerWithChannelAndMembers } from "@/type";
 import { ScrollArea } from "../ui/scroll-area";
 import UserItem from "../user-item";
 import ActionTooltip from "../action-tooltip";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -43,10 +43,15 @@ import { MemberType } from "@prisma/client";
 
 const ManageMembersModal = () => {
   const [loadingId, setLoadingId] = useState("");
+  const [isMounted, setIsMounted] = useState(false);
   const router = useRouter();
   const { toast } = useToast();
   const { isOpen, onClose, type, onOpen, data } = useModal();
   const { server } = data as { server: ServerWithChannelAndMembers };
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const isModalOpen = isOpen && type === "manageMembers";
 
@@ -122,6 +127,10 @@ const ManageMembersModal = () => {
       }
     });
     return fullName.trim();
+  }
+
+  if (!isMounted) {
+    return false;
   }
 
   return (

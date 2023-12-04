@@ -128,11 +128,14 @@ const EditServerModal = () => {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>New server name</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g Hello World" {...field} />
+                    <Input
+                      placeholder="e.g Hello World"
+                      {...field}
+                      className="text-base"
+                    />
                   </FormControl>
-                  <FormDescription>Give server a name</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}

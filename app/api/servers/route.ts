@@ -54,7 +54,6 @@ export async function POST(req: NextRequest) {
       }
     );
   } catch (e: any) {
-    console.log("Server create error", e);
     return new NextResponse(
       JSON.stringify({
         success: false,

@@ -73,7 +73,7 @@ const InviteServerModal = () => {
               <Input
                 readOnly
                 value={inviteURL}
-                className="focus-visible:ring-offset-0 focus-visible:ring-0 border-0 focus:outline-none ring-0 bg-zinc-700 text-blue-500 font-bold text-[16px] cursor-copy"
+                className="focus-visible:ring-offset-0 focus-visible:ring-0 border-0 focus:outline-none ring-0 bg-zinc-700 text-blue-500 font-bold text-base cursor-copy"
               />
               <Button
                 disabled={isCopy || isLoading}
