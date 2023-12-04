@@ -90,7 +90,6 @@ export async function POST(
       }
     );
   } catch (e: any) {
-    console.log("Channel create error", e);
     return new NextResponse(
       JSON.stringify({
         success: false,

@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { Member, MemberType, Profile, Server } from "@prisma/client";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { memberIcons } from "./server-sidebar";
 import UserAvatar from "../user-avatar";
 import ActionTooltip from "../action-tooltip";
@@ -14,8 +14,15 @@ interface ServerMembersProps {
 
 const ServerMembers = ({ member, server, role }: ServerMembersProps) => {
   const params = useParams();
+  const router = useRouter();
+
+  function onClick() {
+    return router.push(`/servers/${server.id}/conversations/${member.id}`);
+  }
+
   return (
     <button
+      onClick={onClick}
       className={cn(
         "rounded-sm flex items-center group w-full hover:bg-zinc-700/50 p-[2px] transition-all",
         params.memberId === member.id && "bg-zinc-700/50"

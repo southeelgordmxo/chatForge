@@ -58,7 +58,7 @@ const ServerSearchItems = ({ data }: ServerSearchItemsProps) => {
       return router.push(`/servers/${params.serverId}/channels/${id}`);
     }
     if (type === "member") {
-      return router.push(`/servers/${params.serverId}/members/${id}`);
+      return router.push(`/servers/${params.serverId}/conversations/${id}`);
     }
   }
 
@@ -100,6 +100,7 @@ const ServerSearchItems = ({ data }: ServerSearchItemsProps) => {
                           type,
                         });
                       }}
+                      className="cursor-pointer"
                     >
                       {item.icon}
                       <span>{checkFullName(item.name)}</span>

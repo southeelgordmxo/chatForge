@@ -45,7 +45,7 @@ const ServerHeader = ({ role, server }: ServerHeaderProps) => {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild className="focus:outline-none">
-        <button className="text-base px-4 py-2 w-full flex items-center justify-between rounded-none bg-zinc-800 font-semibold border-zinc-900">
+        <button className="text-base px-4 py-2 w-full h-12 flex items-center justify-between rounded-none bg-zinc-800 font-semibold border-zinc-900">
           {server.name}
           {isOpen ? <ChevronUp /> : <ChevronDown />}
         </button>
