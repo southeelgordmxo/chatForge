@@ -63,8 +63,8 @@ model Member {
   messages       Message[]
   directMessages DirectMessage[]
 
-  senderConversation   Conversation[] @relation("sender")
-  receiverConversation Conversation[] @relation("receiver")
+  conversationInitiated Conversation[] @relation("memberOne")
+  conversationReceive   Conversation[] @relation("memberTwo")
 
   @@index([profileId])
   @@index([serverId])
@@ -120,17 +120,17 @@ model Message {
 model Conversation {
   id String @id @default(uuid())
 
-  senderId String
-  sender   Member @relation("sender", fields: [senderId], references: [id], onDelete: Cascade)
+  memberOneId String
+  memberOne   Member @relation("memberOne", fields: [memberOneId], references: [id], onDelete: Cascade)
 
-  receiverId String
-  receiver   Member @relation("receiver", fields: [receiverId], references: [id], onDelete: Cascade)
+  memberTwoId String
+  memberTwo   Member @relation("memberTwo", fields: [memberTwoId], references: [id], onDelete: Cascade)
 
   directMessages DirectMessage[]
 
-  @@unique([senderId, receiverId])
-  @@index([senderId])
-  @@index([receiverId])
+  @@unique([memberOneId, memberTwoId])
+  @@index([memberOneId])
+  @@index([memberTwoId])
 }
 
 model DirectMessage {
