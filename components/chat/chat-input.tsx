@@ -11,6 +11,7 @@ import { Plus, Smile } from "lucide-react";
 import ActionTooltip from "../action-tooltip";
 import qs from "query-string";
 import { useModal } from "@/hook/use-modal-store";
+import EmojiPicker from "../emoji-picker";
 
 interface ChatInputProps {
   apiUrl?: string;
@@ -95,9 +96,10 @@ const ChatInput = ({ name, query, type, apiUrl }: ChatInputProps) => {
                     className="px-14 h-12 focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:outline-none text-base"
                   />
                   <ActionTooltip description="emoji picker">
-                    <Smile
-                      onClick={() => {}}
-                      className="cursor-pointer w-8 h-8 p-1 rounded-full absolute top-2.5 right-3 transition-colors  hover:text-yellow-500/60 "
+                    <EmojiPicker
+                      onChange={(emoji: string) =>
+                        field.onChange(`${field.value}${emoji}`)
+                      }
                     />
                   </ActionTooltip>
                 </div>
