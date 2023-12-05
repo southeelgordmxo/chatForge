@@ -27,7 +27,18 @@ export const ourFileRouter = {
       throw new Error("Could not upload!");
     })
     .onUploadComplete(() => {}),
-  messageUpload: f(["image", "pdf", "image/gif"])
+  messageUpload: f([
+    "image",
+    "pdf",
+    "image/gif",
+    "text",
+    "text/html",
+    "text/css",
+    "text/markdown",
+    "text/plain",
+    "application/msword",
+    "text/spdx",
+  ])
     .middleware(() => checkAuth())
     .onUploadError(() => {
       throw new Error("Could not upload!");

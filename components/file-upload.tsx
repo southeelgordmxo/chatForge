@@ -1,8 +1,10 @@
 import { UploadDropzone } from "@/lib/uploadthing";
 import "@uploadthing/react/styles.css";
-import { X } from "lucide-react";
+import { File, X } from "lucide-react";
 import Image from "next/image";
 import { Button } from "./ui/button";
+import { toast } from "./ui/use-toast";
+import Link from "next/link";
 interface FileUploadProps {
   value: string;
   onChange: (url?: string) => void;
@@ -12,7 +14,7 @@ interface FileUploadProps {
 const fileUpload = ({ endpoint, onChange, value }: FileUploadProps) => {
   const fileType = value.split(".").pop();
 
-  if (value && fileType !== "pdf") {
+  if (value && fileType === "image") {
     return (
       <div className="relative h-24 w-24">
         <Image src={value} alt="Upload image" fill className=" rounded-full" />
@@ -28,6 +30,30 @@ const fileUpload = ({ endpoint, onChange, value }: FileUploadProps) => {
         </Button>
       </div>
     );
+  } else {
+    if (value) {
+      return (
+        <div className="relative h-28 w-full">
+          <div className="px-4 bg-zinc-800 flex items-center justify-center w-full h-full">
+            <File className="w-14 h-14 text-indigo-500" />
+            <Link href={value} target="_blank" className="line-clamp-3">
+              {value}
+            </Link>
+          </div>
+          <Button
+            type="button"
+            variant={"destructive"}
+            size={"badge"}
+            className="rounded-full absolute -top-3 -right-2"
+            onClick={() => {
+              onChange("");
+            }}
+          >
+            <X />
+          </Button>
+        </div>
+      );
+    }
   }
 
   return (
@@ -37,7 +63,7 @@ const fileUpload = ({ endpoint, onChange, value }: FileUploadProps) => {
         onChange(res[0].url);
       }}
       onUploadError={(error) => {
-        console.log(error.message);
+        toast({ title: "Could not upload the file! Try again" });
       }}
     />
   );

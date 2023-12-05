@@ -10,6 +10,7 @@ import { Input } from "../ui/input";
 import { Plus, Smile } from "lucide-react";
 import ActionTooltip from "../action-tooltip";
 import qs from "query-string";
+import { useModal } from "@/hook/use-modal-store";
 
 interface ChatInputProps {
   apiUrl?: string;
@@ -24,6 +25,8 @@ const formSchema = z.object({
 
 const ChatInput = ({ name, query, type, apiUrl }: ChatInputProps) => {
   const router = useRouter();
+  const { onOpen } = useModal();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -77,7 +80,9 @@ const ChatInput = ({ name, query, type, apiUrl }: ChatInputProps) => {
                 <div className="relative w-full h-12">
                   <ActionTooltip description="media attachment">
                     <Plus
-                      onClick={() => {}}
+                      onClick={() => {
+                        onOpen("messageFile", { apiUrl, query });
+                      }}
                       className="cursor-pointer w-7 h-7 p-1 rounded-full  bg-zinc-800 absolute top-2.5 left-3 transition-colors hover:bg-zinc-800/80"
                     />
                   </ActionTooltip>

@@ -7,53 +7,49 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import FileUpload from "@/components/file-upload";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { BadgePlus, Boxes, Loader2 } from "lucide-react";
+import { Link, Loader2, Send } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useModal } from "@/hook/use-modal-store";
+import qs from "query-string";
+import { toast } from "../ui/use-toast";
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Server name must be at least 2 characters.",
+  fileUrl: z.string({
+    required_error: "File url is required!",
   }),
-  imageUrl: z.string(),
 });
 
-const InitialModal = () => {
-  const [isMounted, setIsMounted] = useState(false);
+const MessageFileModal = () => {
+  const { onClose, isOpen, type, data } = useModal();
   const router = useRouter();
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
+  const { apiUrl, query } = data;
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      imageUrl: "",
+      fileUrl: "",
     },
   });
 
   // form submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const res = await fetch("/api/servers", {
+    const url = qs.stringifyUrl({
+      url: apiUrl || "",
+      query,
+    });
+    const res = await fetch(url, {
       method: "POST",
-      body: JSON.stringify(values),
+      body: JSON.stringify({
+        ...values,
+        content: values.fileUrl,
+      }),
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
@@ -65,32 +61,33 @@ const InitialModal = () => {
 
     if (res.ok && resData.success) {
       form.reset();
-      router.push(`/servers/${resData.data.id}`);
+      router.refresh();
+      onClose();
     } else {
-      //! change with toast for notification
-      console.log();
+      toast({
+        title: resData.error,
+      });
     }
   }
 
   const isLoading = form.formState.isSubmitting;
+  const isModalOpen = isOpen && type === "messageFile";
 
-  // prevent hydration error
-  if (!isMounted) {
-    return null;
+  function handleClose() {
+    onClose();
+    form.reset();
   }
 
   return (
-    <Dialog open>
-      <DialogTrigger>Open</DialogTrigger>
+    <Dialog open={isModalOpen} onOpenChange={handleClose}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-xl md:text-2xl flex items-center gap-2 justify-center">
-            Create Awesome Server{" "}
-            <Boxes className="w-5 h-5 md:w-9 md:h-9 text-indigo-500" />
+            Add Attachment{" "}
+            <Link className="w-5 h-5 md:w-9 md:h-9 text-indigo-500" />
           </DialogTitle>
           <DialogDescription className="text-center text-lg">
-            Customize your awesome server with a standing name and an remarkable
-            image
+            Send image and file as message
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
@@ -99,12 +96,12 @@ const InitialModal = () => {
               <div className="w-full flex justify-center items-center text-center">
                 <FormField
                   control={form.control}
-                  name="imageUrl"
+                  name="fileUrl"
                   render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <FileUpload
-                          endpoint="serverUpload"
+                          endpoint="messageUpload"
                           onChange={field.onChange}
                           value={field.value}
                         />
@@ -114,38 +111,20 @@ const InitialModal = () => {
                 />
               </div>
             </div>
-
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Server name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="e.g Hello World"
-                      {...field}
-                      className="text-base"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
             <DialogFooter>
               <Button
-                disabled={isLoading}
+                disabled={form.getValues("fileUrl") === "" || isLoading}
                 type="submit"
                 variant={"primary"}
                 className="flex items-center gap-1 text-lg"
               >
                 {isLoading ? (
                   <>
-                    Creating... <Loader2 className="animate-spin w-5 h-5" />
+                    Sending... <Loader2 className="animate-spin w-5 h-5" />
                   </>
                 ) : (
                   <>
-                    Create <BadgePlus className="w-5 h-5" />
+                    Send <Send className="w-5 h-5" />
                   </>
                 )}
               </Button>
@@ -157,4 +136,4 @@ const InitialModal = () => {
   );
 };
 
-export default InitialModal;
+export default MessageFileModal;
