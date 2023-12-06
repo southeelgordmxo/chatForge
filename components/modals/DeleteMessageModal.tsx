@@ -14,18 +14,24 @@ import { Button } from "../ui/button";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
+import qs from "query-string";
 
-const DeleteServerModal = () => {
+const DeleteMessageModal = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onClose, type, data } = useModal();
-  const { server } = data;
-  const isModalOpen = isOpen && type === "deleteServer";
+  const { server, apiUrl, query } = data;
+  const isModalOpen = isOpen && type === "deleteMessage";
 
   async function handleLeaveServer() {
+    const url = qs.stringifyUrl({
+      url: apiUrl || "",
+      query,
+    });
+
     try {
       setIsLoading(true);
-      const resServer = await fetch(`/api/servers/${server?.id}`, {
+      const resServer = await fetch(url, {
         method: "DELETE",
         cache: "no-cache",
       });
@@ -33,9 +39,8 @@ const DeleteServerModal = () => {
 
       if (resServer.ok && dataServer.success) {
         router.push("/");
-        router.refresh();
         onClose();
-        toast({ title: `Successfully deleted the server` });
+        toast({ title: `Successfully deleted the message` });
       } else {
         toast({ title: dataServer.error });
       }
@@ -52,7 +57,7 @@ const DeleteServerModal = () => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-xl md:text-2xl flex items-center gap-2 justify-center">
-            Delete Server
+            Delete the message
             <Trash className="w-5 h-5 md:w-9 md:h-9 text-red-500" />
           </DialogTitle>
           <DialogDescription className="text-center text-lg">
@@ -61,7 +66,7 @@ const DeleteServerModal = () => {
               <span className="text-indigo-500">{server?.name}</span> <br />
             </p>
             <h3 className="text-red-500 text-center">
-              This will delete permanently the server!
+              This will delete permanently this message!
             </h3>
           </DialogDescription>
           <div className="flex flex-col items-start">
@@ -89,4 +94,4 @@ const DeleteServerModal = () => {
   );
 };
 
-export default DeleteServerModal;
+export default DeleteMessageModal;

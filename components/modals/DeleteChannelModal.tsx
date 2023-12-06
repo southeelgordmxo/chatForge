@@ -70,7 +70,7 @@ const DeleteChannelModal = () => {
           <div className="flex flex-col items-start">
             <DialogFooter className="w-full gap-y-3 mt-4">
               <Button onClick={onClose} disabled={isLoading}>
-                Cancel <X className="w-4 h-4 ml-2" />
+                Cancel
               </Button>
               <Button
                 variant={"destructive"}

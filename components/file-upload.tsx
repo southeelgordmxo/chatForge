@@ -11,21 +11,21 @@ interface FileUploadProps {
   endpoint: "messageUpload" | "serverUpload";
 }
 
+// check the type of image
+export function checkImageType(fileType?: string) {
+  return (
+    fileType == "jpeg" ||
+    fileType == "jpg" ||
+    fileType == "png" ||
+    fileType == "gif" ||
+    fileType == "svg" ||
+    fileType == "raw" ||
+    fileType == "webp"
+  );
+}
+
 const fileUpload = ({ endpoint, onChange, value }: FileUploadProps) => {
   const fileType = value.split(".").pop();
-
-  // check the type of image
-  function checkImageType(fileType?: string) {
-    return (
-      fileType == "jpeg" ||
-      fileType == "jpg" ||
-      fileType == "png" ||
-      fileType == "gif" ||
-      fileType == "svg" ||
-      fileType == "raw" ||
-      fileType == "webp"
-    );
-  }
 
   if (value && checkImageType(fileType)) {
     return (

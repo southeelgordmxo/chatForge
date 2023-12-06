@@ -36,6 +36,9 @@ const ChannelIDPage = async ({ params }: ChannelIDPageProps) => {
       profileId: profile.id,
       serverId: params.serverId,
     },
+    include: {
+      profile: true,
+    },
   });
 
   if (!channel || !member) {

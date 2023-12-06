@@ -7,14 +7,14 @@ import { Loader2, ServerCrash } from "lucide-react";
 import ChatItem from "./chat-item";
 
 type MessagesWithMembersWithProfile = Message & {
-  members: Member & {
+  member: Member & {
     profile: Profile;
   };
 };
 
 interface ChatMessageProps {
   name: string;
-  member: Member;
+  member: Member & { profile: Profile };
   chatId: string;
   apiUrl: string;
   socketUrl: string;
@@ -47,7 +47,7 @@ const ChatMessage = ({
   if (status === "pending") {
     return (
       <div className="flex flex-col flex-1 justify-center items-center">
-        <Loader2 className="h-7 w-7 animate-spin" />
+        <Loader2 className="h-7 w-7 animate-spin text-muted-foreground" />
         <h3 className="text-muted-foreground">Loading messages...</h3>
       </div>
     );
@@ -55,7 +55,7 @@ const ChatMessage = ({
   if (status === "error") {
     return (
       <div className="flex flex-col flex-1 justify-center items-center">
-        <ServerCrash className="h-7 w-7 " />
+        <ServerCrash className="h-7 w-7 text-muted-foreground" />
         <h3 className="text-muted-foreground">Something went wrong!</h3>
       </div>
     );
@@ -67,7 +67,7 @@ const ChatMessage = ({
       <div className="px-4 flex items-start w-full">
         <ChatWelcomeMessage name={name} type={type} />
       </div>
-      <div className="flex flex-col-reverse mt-auto">
+      <div className="flex flex-col-reverse mt-auto w-full">
         {data?.pages.map((group, i) => {
           return (
             <Fragment key={i}>
@@ -76,20 +76,23 @@ const ChatMessage = ({
                   key={message.id}
                   content={message.content}
                   currentMember={member}
-                  member={message.members}
+                  member={message.member}
                   deleted={message.deleted}
                   fileUrl={message.fileUrl}
                   isUpdated={message.updatedAt !== message.createdAt}
                   messageId={message.id}
                   socketQuery={socketQuery}
                   socketUrl={socketUrl}
-                  timestamp={message.createdAt.toLocaleDateString("en-Us", {
-                    day: "numeric",
-                    month: "numeric",
-                    year: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })}
+                  timestamp={new Date(message.createdAt).toLocaleDateString(
+                    "en-Us",
+                    {
+                      day: "numeric",
+                      month: "numeric",
+                      year: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    }
+                  )}
                 />
               ))}
             </Fragment>
