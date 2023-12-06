@@ -38,7 +38,6 @@ const DeleteMessageModal = () => {
       const dataServer = await resServer.json();
 
       if (resServer.ok && dataServer.success) {
-        router.push("/");
         onClose();
         toast({ title: `Successfully deleted the message` });
       } else {

@@ -25,6 +25,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "../ui/button";
 import { useForm } from "react-hook-form";
 import { useModal } from "@/hook/use-modal-store";
+import qs from "query-string";
+import { toast } from "../ui/use-toast";
 
 interface ChatItemProps {
   messageId: string;
@@ -80,7 +82,34 @@ const ChatItem = ({
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsEditing(false);
+    const url = qs.stringifyUrl({
+      url: `${socketUrl}/${messageId}`,
+      query: socketQuery,
+    });
+
+    const res = await fetch(url, {
+      method: "PATCH",
+      body: JSON.stringify({ content: values.content }),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      cache: "no-cache",
+    });
+
+    const resData = await res.json();
+
+    if (res.ok && resData.success) {
+      form.reset();
+      toast({
+        title: "Successfully edited the message",
+      });
+      setIsEditing(false);
+    } else {
+      toast({
+        title: resData.error,
+      });
+    }
   }
 
   const isLoading = form.formState.isSubmitting;
@@ -134,7 +163,7 @@ const ChatItem = ({
         >
           {content}
           {isUpdated && !deleted && (
-            <span className="text-xs mx-2 dark:text-zinc-400 text-zinc-700">
+            <span className="text-[13px] mx-2 dark:text-zinc-400 text-zinc-700">
               (edited)
             </span>
           )}
