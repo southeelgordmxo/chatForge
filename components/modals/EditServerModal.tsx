@@ -136,6 +136,7 @@ const EditServerModal = () => {
                   <FormLabel>New server name</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={isLoading}
                       placeholder="e.g Hello World"
                       {...field}
                       className="text-base"

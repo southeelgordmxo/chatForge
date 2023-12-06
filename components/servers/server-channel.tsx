@@ -33,13 +33,13 @@ const ServerChannel = ({ channel, server, role }: ServerChannelProps) => {
       onClick={onClick}
       className={cn(
         " rounded-sm flex items-center group w-full hover:bg-zinc-700/50 p-[3px] px-1 transition-all",
-        params.channelId === channel.id && "bg-zinc-700/50"
+        params?.channelId === channel.id && "bg-zinc-700/50"
       )}
     >
       <p
         className={cn(
           " font-semibold line-clamp-1 flex items-center text-zinc-300 group-hover:text-zinc-100",
-          params.channelId === channel.id && "text-zinc-100"
+          params?.channelId === channel.id && "text-zinc-100"
         )}
       >
         {channelIcons[channel.type]}

@@ -14,7 +14,20 @@ interface FileUploadProps {
 const fileUpload = ({ endpoint, onChange, value }: FileUploadProps) => {
   const fileType = value.split(".").pop();
 
-  if (value && fileType === "image") {
+  // check the type of image
+  function checkImageType(fileType?: string) {
+    return (
+      fileType == "jpeg" ||
+      fileType == "jpg" ||
+      fileType == "png" ||
+      fileType == "gif" ||
+      fileType == "svg" ||
+      fileType == "raw" ||
+      fileType == "webp"
+    );
+  }
+
+  if (value && checkImageType(fileType)) {
     return (
       <div className="relative h-24 w-24">
         <Image src={value} alt="Upload image" fill className=" rounded-full" />

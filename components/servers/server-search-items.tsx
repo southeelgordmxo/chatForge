@@ -34,6 +34,7 @@ const ServerSearchItems = ({ data }: ServerSearchItemsProps) => {
 
   useEffect(() => {
     setIsMounted(true);
+    // keyboard key event to open search items
     function down(e: KeyboardEvent) {
       if (e.key === "q" && (e.metaKey || e.ctrlKey)) {
         e.preventDefault();
@@ -55,10 +56,12 @@ const ServerSearchItems = ({ data }: ServerSearchItemsProps) => {
     type: "member" | "channel";
   }) {
     if (type === "channel") {
-      return router.push(`/servers/${params.serverId}/channels/${id}`);
+      setIsOpen(false);
+      return router.push(`/servers/${params?.serverId}/channels/${id}`);
     }
     if (type === "member") {
-      return router.push(`/servers/${params.serverId}/conversations/${id}`);
+      setIsOpen(false);
+      return router.push(`/servers/${params?.serverId}/conversations/${id}`);
     }
   }
 

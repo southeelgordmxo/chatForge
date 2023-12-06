@@ -18,7 +18,7 @@ import { toast } from "../ui/use-toast";
 const LeaveServerModal = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const { isOpen, onClose, onOpen, type, data } = useModal();
+  const { isOpen, onClose, type, data } = useModal();
   const { server } = data;
   const isModalOpen = isOpen && type === "leaveServer";
 

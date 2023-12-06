@@ -26,6 +26,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hook/use-modal-store";
+import { toast } from "../ui/use-toast";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -64,9 +65,13 @@ const CreateServerModal = () => {
       form.reset();
       router.refresh();
       onClose();
+      toast({
+        title: "Successfully created new Server",
+      });
     } else {
-      //! change with toast for notification
-      console.log();
+      toast({
+        title: resData.error,
+      });
     }
   }
 

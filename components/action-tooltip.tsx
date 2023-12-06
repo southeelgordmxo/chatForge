@@ -17,8 +17,8 @@ interface ActionTooltipProps {
 const ActionTooltip = ({
   children,
   description,
-  align,
-  side,
+  align = "center",
+  side = "top",
 }: ActionTooltipProps) => {
   return (
     <TooltipProvider>

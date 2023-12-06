@@ -14,6 +14,7 @@ import { Label } from "../ui/label";
 import { Button } from "../ui/button";
 import useOrigin from "@/hook/use-origin";
 import { useState } from "react";
+import { toast } from "../ui/use-toast";
 
 const InviteServerModal = () => {
   const [isCopy, setIsCopy] = useState(false);
@@ -44,12 +45,13 @@ const InviteServerModal = () => {
       if (res.ok && data.success) {
         onClose();
         onOpen("inviteServer", { server: data.data });
+        toast({ title: `Successfully generate new invite code` });
       } else {
-        console.log(data.error);
+        toast({ title: data.error });
       }
     } catch (e: any) {
       setIsLoading(true);
-      console.log(e);
+      toast({ title: "Could not generate new invite code!" });
     } finally {
       setIsLoading(false);
     }

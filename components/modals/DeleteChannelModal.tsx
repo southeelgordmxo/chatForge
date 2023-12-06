@@ -35,10 +35,10 @@ const DeleteChannelModal = () => {
       const dataServer = await resServer.json();
 
       if (resServer.ok && dataServer.success) {
-        toast({ title: `Successfully deleted the channel` });
         router.push(`/servers/${server?.id}`);
         router.refresh();
         onClose();
+        toast({ title: `Successfully deleted the channel` });
       } else {
         toast({ title: dataServer.error });
       }
@@ -81,7 +81,7 @@ const DeleteChannelModal = () => {
                 {isLoading ? (
                   <Loader2 className="animate-spin w-4 h-4 ml-2" />
                 ) : (
-                  <LogOut className="w-4 h-4 ml-2" />
+                  <Trash className="w-4 h-4 ml-2" />
                 )}
               </Button>
             </DialogFooter>

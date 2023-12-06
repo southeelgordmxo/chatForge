@@ -13,7 +13,7 @@ const NavigationAction = () => {
           className="group flex items-center"
           onClick={() => onOpen("createServer")}
         >
-          <div className="mx-4 overflow-hidden flex items-center justify-center w-[55px] h-[55px] rounded-[25px] bg-background transition-all group-hover:rounded-[19px] group-hover:bg-indigo-500/90">
+          <div className="mx-4 overflow-hidden flex items-center justify-center w-[55px] h-[55px] rounded-[25px] bg-background transition-all group-hover:rounded-[19px] group-hover:bg-indigo-500">
             <Plus
               className="font-bold text-indigo-500 group-hover:text-primary transition"
               size={28}

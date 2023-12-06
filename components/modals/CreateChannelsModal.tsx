@@ -129,6 +129,7 @@ const CreateChannelsModal = () => {
                   <FormLabel>Channel name</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={isLoading}
                       placeholder="e.g Learning next js"
                       {...field}
                       className="text-base"

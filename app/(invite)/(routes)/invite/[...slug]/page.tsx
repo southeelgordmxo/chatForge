@@ -18,6 +18,10 @@ const page = async ({
     return redirect("/");
   }
 
+  if (!params.slug["1"]) {
+    return redirect("/");
+  }
+
   const existingServer = await db.server.findFirst({
     where: {
       invitationCode: params.slug["0"],

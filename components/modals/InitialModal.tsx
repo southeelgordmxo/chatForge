@@ -26,6 +26,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "../ui/use-toast";
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -66,9 +67,13 @@ const InitialModal = () => {
     if (res.ok && resData.success) {
       form.reset();
       router.push(`/servers/${resData.data.id}`);
+      toast({
+        title: "Successfully created new Server",
+      });
     } else {
-      //! change with toast for notification
-      console.log();
+      toast({
+        title: resData.error,
+      });
     }
   }
 
@@ -81,7 +86,6 @@ const InitialModal = () => {
 
   return (
     <Dialog open>
-      <DialogTrigger>Open</DialogTrigger>
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-xl md:text-2xl flex items-center gap-2 justify-center">
@@ -123,6 +127,7 @@ const InitialModal = () => {
                   <FormLabel>Server name</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={isLoading}
                       placeholder="e.g Hello World"
                       {...field}
                       className="text-base"

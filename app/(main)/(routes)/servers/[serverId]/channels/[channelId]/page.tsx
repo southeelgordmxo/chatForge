@@ -1,5 +1,6 @@
 import ChatHeader from "@/components/chat/chat-header";
 import ChatInput from "@/components/chat/chat-input";
+import ChatMessage from "@/components/chat/chat-messaage";
 import { authProfile } from "@/lib/auth-profile";
 import { db } from "@/lib/db.prisma";
 import { redirectToSignIn } from "@clerk/nextjs";
@@ -44,7 +45,20 @@ const ChannelIDPage = async ({ params }: ChannelIDPageProps) => {
   return (
     <div className="flex flex-col items-center w-full h-full">
       <ChatHeader channel={channel} serverId={params.serverId} type="channel" />
-      <div className="flex-1">This is chat playground</div>
+      <ChatMessage
+        socketUrl="/api/socket/messages"
+        apiUrl="/api/messages"
+        name={channel.name}
+        type="channel"
+        chatId={channel.id}
+        member={member}
+        paramKey="channelId"
+        paramValue={channel.id}
+        socketQuery={{
+          channelId: channel.id,
+          serverId: params.serverId,
+        }}
+      />
       <div className="w-full py-2">
         <ChatInput
           type="channel"

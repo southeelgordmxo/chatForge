@@ -19,7 +19,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { BadgePlus, Box, Loader2, Wrench } from "lucide-react";
+import { Loader2, Save, Wrench } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useRouter } from "next/navigation";
@@ -130,6 +130,7 @@ const EditChannelModal = () => {
                   <FormLabel>Channel name</FormLabel>
                   <FormControl>
                     <Input
+                      disabled={isLoading}
                       placeholder="e.g Learning next js"
                       {...field}
                       className="text-base"
@@ -184,7 +185,7 @@ const EditChannelModal = () => {
                   </>
                 ) : (
                   <>
-                    Save <BadgePlus className="w-5 h-5" />
+                    Save <Save className="w-5 h-5" />
                   </>
                 )}
               </Button>

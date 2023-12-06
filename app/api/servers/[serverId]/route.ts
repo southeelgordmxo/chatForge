@@ -1,5 +1,6 @@
 import { authProfile } from "@/lib/auth-profile";
 import { db } from "@/lib/db.prisma";
+import { MemberType } from "@prisma/client";
 import { NextRequest, NextResponse } from "next/server";
 import { v4 as UUID4 } from "uuid";
 
@@ -109,6 +110,7 @@ export async function DELETE(
         members: {
           some: {
             profileId: profile.id,
+            role: MemberType.ADMIN,
           },
         },
       },

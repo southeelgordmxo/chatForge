@@ -32,10 +32,10 @@ const DeleteServerModal = () => {
       const dataServer = await resServer.json();
 
       if (resServer.ok && dataServer.success) {
-        toast({ title: `Successfully deleted the server` });
         router.push("/");
         router.refresh();
         onClose();
+        toast({ title: `Successfully deleted the server` });
       } else {
         toast({ title: dataServer.error });
       }
@@ -78,7 +78,7 @@ const DeleteServerModal = () => {
                 {isLoading ? (
                   <Loader2 className="animate-spin w-4 h-4 ml-2" />
                 ) : (
-                  <LogOut className="w-4 h-4 ml-2" />
+                  <Trash className="w-4 h-4 ml-2" />
                 )}
               </Button>
             </DialogFooter>

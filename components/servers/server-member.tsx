@@ -25,7 +25,7 @@ const ServerMembers = ({ member, server, role }: ServerMembersProps) => {
       onClick={onClick}
       className={cn(
         "rounded-sm flex items-center group w-full hover:bg-zinc-700/50 p-[2px] transition-all",
-        params.memberId === member.id && "bg-zinc-700/50"
+        params?.memberId === member.id && "bg-zinc-700/50"
       )}
     >
       <UserAvatar
@@ -36,7 +36,7 @@ const ServerMembers = ({ member, server, role }: ServerMembersProps) => {
       <p
         className={cn(
           "font-semibold line-clamp-1  ml-2 flex items-center gap-x-[2px] text-zinc-300 group-hover:text-zinc-100",
-          params.memberId === member.id && "text-zinc-100"
+          params?.memberId === member.id && "text-zinc-100"
         )}
       >
         {member.profile.name}
