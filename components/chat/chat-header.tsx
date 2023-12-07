@@ -16,6 +16,7 @@ import {
 import MobileToggle from "../mobile-toggle";
 import UserAvatar from "../user-avatar";
 import SocketIndicator from "../socket-indicator";
+import { checkFullName } from "@/lib/helper";
 
 interface ChatHeaderProps {
   serverId: string;
@@ -59,7 +60,7 @@ const ChatHeader = ({ channel, serverId, type, member }: ChatHeaderProps) => {
 
         {member && (
           <p className="ml-2 flex items-center">
-            {member && member.profile && member.profile.name}
+            {member && member.profile && checkFullName(member.profile.name)}
             {member && memberIcons[member.role]}
           </p>
         )}

@@ -7,11 +7,12 @@ import { toast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { Input } from "../ui/input";
-import { Plus, Smile } from "lucide-react";
+import { Plus } from "lucide-react";
 import ActionTooltip from "../action-tooltip";
 import qs from "query-string";
 import { useModal } from "@/hook/use-modal-store";
 import EmojiPicker from "../emoji-picker";
+import { checkFullName } from "@/lib/helper";
 
 interface ChatInputProps {
   apiUrl?: string;

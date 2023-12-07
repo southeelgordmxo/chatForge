@@ -5,6 +5,7 @@ import { useParams, useRouter } from "next/navigation";
 import { memberIcons } from "./server-sidebar";
 import UserAvatar from "../user-avatar";
 import ActionTooltip from "../action-tooltip";
+import { checkFullName } from "@/lib/helper";
 
 interface ServerMembersProps {
   member: Member & { profile: Profile };
@@ -39,7 +40,7 @@ const ServerMembers = ({ member, server, role }: ServerMembersProps) => {
           params?.memberId === member.id && "text-zinc-100"
         )}
       >
-        {member.profile.name}
+        {checkFullName(member.profile.name)}
         <ActionTooltip description={role ?? ""} align="center" side="top">
           {role && memberIcons[role]}
         </ActionTooltip>

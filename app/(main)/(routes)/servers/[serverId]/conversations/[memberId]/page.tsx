@@ -1,7 +1,10 @@
 import ChatHeader from "@/components/chat/chat-header";
+import ChatInput from "@/components/chat/chat-input";
+import ChatMessage from "@/components/chat/chat-messaage";
 import { authProfile } from "@/lib/auth-profile";
 import { findOrCreateConversation } from "@/lib/conversation";
 import { db } from "@/lib/db.prisma";
+import { checkFullName } from "@/lib/helper";
 import { redirectToSignIn } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
@@ -19,7 +22,7 @@ const MemberIDPage = async ({ params }: MemberIDPageProps) => {
     return redirectToSignIn();
   }
 
-  const currentUser = await db.member.findFirst({
+  const currentMember = await db.member.findFirst({
     where: {
       serverId: params.serverId,
       profileId: profile.id,
@@ -29,12 +32,12 @@ const MemberIDPage = async ({ params }: MemberIDPageProps) => {
     },
   });
 
-  if (!currentUser) {
+  if (!currentMember) {
     return redirect("/");
   }
 
   const conversation = await findOrCreateConversation(
-    currentUser.id,
+    currentMember.id,
     params.memberId
   );
 
@@ -54,6 +57,29 @@ const MemberIDPage = async ({ params }: MemberIDPageProps) => {
         type="member"
         member={otherMember}
       />
+      <ChatMessage
+        member={currentMember}
+        name={otherMember.profile.name}
+        type="member"
+        apiUrl="/api/direct-messages"
+        chatId={conversation.id}
+        paramKey="conversationId"
+        paramValue={conversation.id}
+        socketUrl="/api/socket/direct-messages"
+        socketQuery={{
+          conversationId: conversation.id,
+        }}
+      />
+      <div className="w-full py-2">
+        <ChatInput
+          name={checkFullName(otherMember.profile.name)}
+          type="member"
+          apiUrl="/api/socket/direct-messages"
+          query={{
+            conversationId: conversation.id,
+          }}
+        />
+      </div>
     </div>
   );
 };

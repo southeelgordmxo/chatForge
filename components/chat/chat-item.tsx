@@ -238,7 +238,7 @@ const ChatItem = ({
       )}
       {isPDF && (
         <div className="relative h-16 w-full mt-3">
-          <div className="px-4 bg-zinc-800 flex items-center justify-center w-full h-full rounded-md">
+          <div className="px-4 bg-zinc-800 flex items-center justify-start w-full h-full rounded-md">
             <File className="w-14 h-14 text-indigo-500" />
             <Link
               href={fileUrl}

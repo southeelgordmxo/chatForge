@@ -1,3 +1,4 @@
+import { checkFullName } from "@/lib/helper";
 import { Hash } from "lucide-react";
 
 interface ChatWelcomeMessageProps {
@@ -15,12 +16,12 @@ const ChatWelcomeMessage = ({ name, type }: ChatWelcomeMessageProps) => {
       )}
       <p className="text-xl md:text-2xl">
         {type === "channel" ? "Welcome to #" : ""}
-        {name}
+        {checkFullName(name)}
       </p>
       <p className="text-muted-foreground">
         {name && type === "channel"
           ? `This is the conversation start of the #${name} channel`
-          : `This is the conversation start of with ${name}`}
+          : `This is the conversation start of with ${checkFullName(name)}`}
       </p>
     </div>
   );

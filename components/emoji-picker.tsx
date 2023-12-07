@@ -8,7 +8,7 @@ import { Smile } from "lucide-react";
 import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { useTheme } from "next-themes";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface EmojiPickerProps {
   onChange: (emoji: string) => void;
@@ -16,7 +16,16 @@ interface EmojiPickerProps {
 
 const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const { resolvedTheme } = useTheme();
+
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
