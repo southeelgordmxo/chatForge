@@ -19,8 +19,6 @@ export function useChatSocket({
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    console.log(updateKey, addKey);
-
     if (!socket) {
       return;
     }

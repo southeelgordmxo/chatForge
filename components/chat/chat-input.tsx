@@ -87,6 +87,9 @@ const ChatInput = ({ name, query, type, apiUrl }: ChatInputProps) => {
                     />
                   </ActionTooltip>
                   <Input
+                    autoCorrect="false"
+                    autoSave="false"
+                    autoComplete="off"
                     disabled={isLoading}
                     placeholder={`Message ${
                       type === "channel" ? "#" + name : name
