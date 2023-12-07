@@ -45,7 +45,7 @@ const ServerHeader = ({ role, server }: ServerHeaderProps) => {
   return (
     <DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
       <DropdownMenuTrigger asChild className="focus:outline-none">
-        <button className="text-base px-4 py-2 w-full h-12 flex items-center justify-between rounded-none bg-zinc-800 font-semibold border-zinc-900">
+        <button className="text-base px-4 py-2 w-full h-12 flex items-center justify-between rounded-none dark:bg-zinc-800 bg-[#cacacf] font-semibold border-zinc-900">
           {server.name}
           {isOpen ? <ChevronUp /> : <ChevronDown />}
         </button>
@@ -56,7 +56,7 @@ const ServerHeader = ({ role, server }: ServerHeaderProps) => {
             onClick={() => {
               onOpen("inviteServer", { server });
             }}
-            className="text-base text-indigo-600 px-4 py-2 cursor-pointer"
+            className="text-base text-indigo-600 px-4 py-2 cursor-pointer "
           >
             Invite people
             <UserPlus className="w-5 h-5 ml-auto" />

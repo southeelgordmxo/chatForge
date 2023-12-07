@@ -10,7 +10,7 @@ const ChatWelcomeMessage = ({ name, type }: ChatWelcomeMessageProps) => {
   return (
     <div className="mb-4 space-y-4">
       {type === "channel" && (
-        <div className="w-16 h-16 rounded-full flex items-center justify-center p-3 bg-zinc-800">
+        <div className="w-16 h-16 rounded-full flex items-center justify-center p-3 dark:bg-zinc-800 bg-zinc-200">
           <Hash className="h-9 w-9 md:w-12 md:h-12" />
         </div>
       )}

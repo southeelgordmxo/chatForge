@@ -23,7 +23,7 @@ const NavigationItem = ({ id, imageUrl, name }: NavigationItemProps) => {
       >
         <div
           className={cn(
-            "absolute w-[4px] bg-zinc-300 left-0 rounded-r-full transition-all",
+            "absolute w-[4px] dark:bg-zinc-400 bg-zinc-500 left-0 rounded-r-full transition-all",
             params?.serverId !== id && "group-hover:h-[20px]",
             params?.serverId === id ? "h-[36px]" : "h-[10px]"
           )}

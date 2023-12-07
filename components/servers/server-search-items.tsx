@@ -72,13 +72,13 @@ const ServerSearchItems = ({ data }: ServerSearchItemsProps) => {
   return (
     <>
       <button
-        className="w-full flex items-center justify-between bg-zinc-800 p-2 hover:bg-zinc-700 transition-colors rounded-md"
+        className="w-full flex items-center justify-between dark:bg-zinc-800 bg-[#cacacf] hover:bg-[#bcbcc9] p-2 dark:hover:bg-zinc-700 transition-colors rounded-md"
         onClick={() => setIsOpen(true)}
       >
         <Search className="w-4 h-4 " />
         <p className="font-semibold">
           Search
-          <kbd className="ml-1 rounded-md p-1 bg-zinc-900">
+          <kbd className="ml-1 rounded-md p-1 dark:bg-zinc-800 bg-zinc-300">
             <small className="text-xs">ctrl + q</small>
           </kbd>
         </p>

@@ -46,7 +46,7 @@ const memberIcons = {
 
 const ChatHeader = ({ channel, serverId, type, member }: ChatHeaderProps) => {
   return (
-    <div className="px-3 flex items-center gap-x-3 h-12 w-full font-semibold border-b border-b-neutral-700">
+    <div className="px-3 flex items-center gap-x-3 h-12 w-full font-semibold border-b dark:border-b-neutral-700 border-b-neutral-400">
       <MobileToggle serverId={serverId} />
       <p className="text-[19px] font-semibold flex items-center">
         {type === "channel" && channel && channelIcons[channel?.type]}

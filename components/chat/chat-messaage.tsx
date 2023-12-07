@@ -58,7 +58,7 @@ const ChatMessage = ({
     bottomChatRef,
     shouldLoadMore: !isFetchingNextPage && !!hasNextPage,
     loadMoreMessages: fetchNextPage,
-    count: data?.pages?.[0]?.data.length ?? 0,
+    count: data?.pages?.[0]?.data?.length ?? 0,
   });
 
   if (status === "pending") {

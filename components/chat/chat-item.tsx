@@ -153,7 +153,7 @@ const ChatItem = ({
   }
 
   return (
-    <div className="cursor-pointer relative group my-2 py-4 bg-zinc-900/50 w-full px-4 hover:bg-zinc-900/75">
+    <div className="transition-all cursor-pointer relative group my-2 py-4 dark:bg-zinc-900/50 bg-zinc-200/30  w-full px-4 dark:hover:bg-zinc-900/75 hover:bg-zinc-200/50">
       <div className="flex items-center gap-2">
         <UserAvatar
           onClick={handleUserClick}
@@ -178,7 +178,7 @@ const ChatItem = ({
       {!fileUrl && !isEditing && (
         <p
           className={cn(
-            "mt-1 dark:text-zinc-300 text-zinc-600 text-[17px]",
+            "mt-1 dark:text-zinc-200 text-zinc-800 text-[17px]",
             deleted && "italic dark:text-zinc-400 text-zinc-700 mt-2 text-sm"
           )}
         >
@@ -208,7 +208,7 @@ const ChatItem = ({
                         disabled={isLoading}
                         placeholder="Edit your content"
                         {...field}
-                        className="text-base w-full  focus-visible:ring-0 focus-visible:outline-none focus-visible:border-none border-none"
+                        className="text-base w-full  focus-visible:ring-0 focus-visible:outline-none rounded-none focus-visible:border-none border-none"
                       />
                       <Button type="submit" size={"sm"}>
                         Save
@@ -238,7 +238,7 @@ const ChatItem = ({
       )}
       {isPDF && (
         <div className="relative h-16 w-full mt-3">
-          <div className="px-4 bg-zinc-800 flex items-center justify-start w-full h-full rounded-md">
+          <div className="px-4 dark:bg-zinc-800 bg-zinc-200 flex items-center justify-start w-full h-full rounded-md">
             <File className="w-14 h-14 text-indigo-500" />
             <Link
               href={fileUrl}
@@ -256,7 +256,7 @@ const ChatItem = ({
           {editable && (
             <ActionTooltip description="Edit" align="center" side="top">
               <Edit
-                className="hidden group-hover:block w-5 h-5 transition-all text-zinc-300 hover:text-zinc-100"
+                className="hidden group-hover:block w-5 h-5 transition-all dark:text-zinc-300 text-zinc-800   dark:hover:text-zinc-100 hover:text-zinc-700"
                 onClick={() => setIsEditing(true)}
               />
             </ActionTooltip>

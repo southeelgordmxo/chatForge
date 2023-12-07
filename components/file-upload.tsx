@@ -47,7 +47,7 @@ const fileUpload = ({ endpoint, onChange, value }: FileUploadProps) => {
     if (value) {
       return (
         <div className="relative h-28 w-full">
-          <div className="px-4 bg-zinc-800 flex items-center justify-center w-full h-full">
+          <div className="px-4 dark:bg-zinc-800 bg-zinc-200 flex items-center justify-center w-full h-full">
             <File className="w-14 h-14 text-indigo-500" />
             <Link href={value} target="_blank" className="line-clamp-3">
               {value}

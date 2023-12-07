@@ -17,7 +17,7 @@ export default function Error({
   }, [error]);
 
   return (
-    <div className="flex justify-center items-center flex-col mt-8 md:mt-16">
+    <div className="h-full flex justify-center items-center flex-col  gap-4">
       <h2 className="text-3xl md:text-5xl">Something went wrong!</h2>
       <Bug className="w-[50px] h-[50px] text-red-500" />
       <Button size={"lg"} className="text-xl" onClick={() => reset()}>

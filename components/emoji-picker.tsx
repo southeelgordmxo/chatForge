@@ -31,7 +31,7 @@ const EmojiPicker = ({ onChange }: EmojiPickerProps) => {
     <Popover open={isOpen} onOpenChange={setIsOpen}>
       <PopoverTrigger asChild>
         <Smile
-          className="cursor-pointer w-8 h-8 p-1 rounded-full absolute top-2.5 right-3 transition-colors  hover:text-yellow-500/60 "
+          className="cursor-pointer w-8 h-8 p-1 rounded-full absolute top-2.5 right-3 transition-colors  dark:hover:text-yellow-500/60 hover:text-yellow-500 "
           onClick={() => setIsOpen(true)}
         />
       </PopoverTrigger>

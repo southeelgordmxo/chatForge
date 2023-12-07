@@ -28,9 +28,9 @@ const NavigationSidebar = async () => {
   });
 
   return (
-    <div className="space-y-2 text-primary h-full w-full flex flex-col items-center dark:bg-zinc-900">
+    <div className="space-y-2 text-primary h-full w-full flex flex-col items-center dark:bg-zinc-900 bg-zinc-200">
       <NavigationAction />
-      <Separator className="max-w-[47px] h-0.5 mx-auto" />
+      <Separator className="max-w-[47px] h-0.5 mx-auto dark:bg-zinc-800 bg-zinc-300" />
       <ScrollArea className="w-full flex-1">
         {server.map((server) => (
           <NavigationItem

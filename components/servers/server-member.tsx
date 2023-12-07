@@ -25,19 +25,19 @@ const ServerMembers = ({ member, server, role }: ServerMembersProps) => {
     <button
       onClick={onClick}
       className={cn(
-        "rounded-sm flex items-center group w-full hover:bg-zinc-700/50 p-[2px] transition-all",
-        params?.memberId === member.id && "bg-zinc-700/50"
+        "rounded-sm flex items-center group w-full dark:hover:bg-zinc-700/50 hover:bg-zinc-400/50  p-[4px] px-2 transition-all",
+        params?.memberId === member.id && "dark:bg-zinc-700/50 bg-zinc-400/50"
       )}
     >
       <UserAvatar
         name={member.profile.name}
         imageUrl={member.profile.imageUrl}
-        className="w-10 h-10"
+        className="w-10 h-10 "
       />
       <p
         className={cn(
-          "font-semibold line-clamp-1  ml-2 flex items-center gap-x-[2px] text-zinc-300 group-hover:text-zinc-100",
-          params?.memberId === member.id && "text-zinc-100"
+          "ml-1 font-semibold line-clamp-1 flex items-center dark:text-zinc-300 text-zinc-800  dark:group-hover:text-zinc-100 group-hover:text-zinc-700",
+          params?.memberId === member.id && "dark:text-zinc-100 text-zinc-700"
         )}
       >
         {checkFullName(member.profile.name)}

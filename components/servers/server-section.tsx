@@ -24,7 +24,7 @@ const ServerSection = ({
   const { onOpen } = useModal();
   return (
     <div className="flex items-center p-2">
-      <h3>{label}</h3>
+      <h3 className="font-semibold">{label}</h3>
       {role !== MemberType.GUEST && sectionType === "channel" && (
         <ActionTooltip
           description="Create channel"

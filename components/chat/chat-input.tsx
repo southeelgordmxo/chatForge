@@ -4,7 +4,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { toast } from "../ui/use-toast";
-import { useRouter } from "next/navigation";
 import { Form, FormControl, FormField, FormItem } from "../ui/form";
 import { Input } from "../ui/input";
 import { Plus } from "lucide-react";
@@ -12,7 +11,7 @@ import ActionTooltip from "../action-tooltip";
 import qs from "query-string";
 import { useModal } from "@/hook/use-modal-store";
 import EmojiPicker from "../emoji-picker";
-import { checkFullName } from "@/lib/helper";
+import { useRef } from "react";
 
 interface ChatInputProps {
   apiUrl?: string;
@@ -26,9 +25,7 @@ const formSchema = z.object({
 });
 
 const ChatInput = ({ name, query, type, apiUrl }: ChatInputProps) => {
-  const router = useRouter();
   const { onOpen } = useModal();
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -84,7 +81,7 @@ const ChatInput = ({ name, query, type, apiUrl }: ChatInputProps) => {
                       onClick={() => {
                         onOpen("messageFile", { apiUrl, query });
                       }}
-                      className="cursor-pointer w-7 h-7 p-1 rounded-full  bg-zinc-800 absolute top-2.5 left-3 transition-colors hover:bg-zinc-800/80"
+                      className="cursor-pointer w-7 h-7 p-1 rounded-full  dark:bg-zinc-800 bg-zinc-300 absolute top-2.5 left-3 transition-colors dark:hover:bg-zinc-800/80 hover:bg-zinc-300/80"
                     />
                   </ActionTooltip>
                   <Input
