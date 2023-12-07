@@ -4,7 +4,6 @@ import { ChannelType, MemberType, Server } from "@prisma/client";
 import { ChannelLabel } from "./server-sidebar";
 import ActionTooltip from "../action-tooltip";
 import { Plus, UserCog } from "lucide-react";
-import { Button } from "../ui/button";
 import { useModal } from "@/hook/use-modal-store";
 
 interface ServerSectionProps {

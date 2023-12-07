@@ -17,6 +17,7 @@ import MobileToggle from "../mobile-toggle";
 import UserAvatar from "../user-avatar";
 import SocketIndicator from "../socket-indicator";
 import { checkFullName } from "@/lib/helper";
+import ChatVideoAndAudioButton from "./chat-video-and-audio-button";
 
 interface ChatHeaderProps {
   serverId: string;
@@ -66,7 +67,8 @@ const ChatHeader = ({ channel, serverId, type, member }: ChatHeaderProps) => {
         )}
       </p>
 
-      <div className="ml-auto">
+      <div className="ml-auto flex items-center gap-x-2">
+        {/* {type === "member" && <ChatVideoAndAudioButton />} */}
         <SocketIndicator />
       </div>
     </div>

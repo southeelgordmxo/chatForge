@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  transpilePackages: [
+    "@livekit/components-react",
+    "livekit-client",
+    "livekit-server-sdk",
+  ],
   images: {
     remotePatterns: [
       {

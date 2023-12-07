@@ -1,6 +1,7 @@
 import ChatHeader from "@/components/chat/chat-header";
 import ChatInput from "@/components/chat/chat-input";
 import ChatMessage from "@/components/chat/chat-messaage";
+import MediaRoom from "@/components/media-room";
 import { authProfile } from "@/lib/auth-profile";
 import { findOrCreateConversation } from "@/lib/conversation";
 import { db } from "@/lib/db.prisma";
@@ -13,9 +14,12 @@ interface MemberIDPageProps {
     serverId: string;
     memberId: string;
   };
+  searchParams: {
+    video?: boolean;
+  };
 }
 
-const MemberIDPage = async ({ params }: MemberIDPageProps) => {
+const MemberIDPage = async ({ params, searchParams }: MemberIDPageProps) => {
   const profile = await authProfile();
 
   if (!profile) {
@@ -57,29 +61,33 @@ const MemberIDPage = async ({ params }: MemberIDPageProps) => {
         type="member"
         member={otherMember}
       />
-      <ChatMessage
-        member={currentMember}
-        name={otherMember.profile.name}
-        type="member"
-        apiUrl="/api/direct-messages"
-        chatId={conversation.id}
-        paramKey="conversationId"
-        paramValue={conversation.id}
-        socketUrl="/api/socket/direct-messages"
-        socketQuery={{
-          conversationId: conversation.id,
-        }}
-      />
-      <div className="w-full py-2">
-        <ChatInput
-          name={checkFullName(otherMember.profile.name)}
-          type="member"
-          apiUrl="/api/socket/direct-messages"
-          query={{
-            conversationId: conversation.id,
-          }}
-        />
-      </div>
+      {!searchParams?.video && (
+        <>
+          <ChatMessage
+            member={currentMember}
+            name={otherMember.profile.name}
+            type="member"
+            apiUrl="/api/direct-messages"
+            chatId={conversation.id}
+            paramKey="conversationId"
+            paramValue={conversation.id}
+            socketUrl="/api/socket/direct-messages"
+            socketQuery={{
+              conversationId: conversation.id,
+            }}
+          />
+          <div className="w-full py-2">
+            <ChatInput
+              name={checkFullName(otherMember.profile.name)}
+              type="member"
+              apiUrl="/api/socket/direct-messages"
+              query={{
+                conversationId: conversation.id,
+              }}
+            />
+          </div>
+        </>
+      )}
     </div>
   );
 };
