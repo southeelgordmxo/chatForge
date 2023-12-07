@@ -5,12 +5,22 @@ interface UserAvatarProps {
   imageUrl: string;
   name: string;
   className?: string;
+  onClick?: () => {} | void;
 }
 
-const UserAvatar = ({ className, imageUrl, name }: UserAvatarProps) => {
+const UserAvatar = ({
+  onClick,
+  className,
+  imageUrl,
+  name,
+}: UserAvatarProps) => {
   return (
     <Avatar>
-      <AvatarImage className={cn("w-12 h-12", className)} src={imageUrl} />
+      <AvatarImage
+        onClick={onClick}
+        className={cn("w-12 h-12", className)}
+        src={imageUrl}
+      />
       <AvatarFallback>{name}</AvatarFallback>
     </Avatar>
   );

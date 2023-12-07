@@ -27,6 +27,7 @@ import { useForm } from "react-hook-form";
 import { useModal } from "@/hook/use-modal-store";
 import qs from "query-string";
 import { toast } from "../ui/use-toast";
+import { useParams, useRouter } from "next/navigation";
 
 interface ChatItemProps {
   messageId: string;
@@ -63,6 +64,8 @@ const ChatItem = ({
 }: ChatItemProps) => {
   const [isEditing, setIsEditing] = useState(false);
   const { onOpen } = useModal();
+  const router = useRouter();
+  const params = useParams();
 
   const fileExt = fileUrl?.split(".").pop();
 
@@ -135,15 +138,33 @@ const ChatItem = ({
     });
   }, [content]);
 
+  function handleUserClick() {
+    if (currentMember.id === member.id) {
+      return;
+    }
+
+    if (!params) {
+      return;
+    }
+
+    return router.push(
+      `/servers/${params?.serverId}/conversations/${member.id}`
+    );
+  }
+
   return (
     <div className="cursor-pointer relative group my-2 py-4 bg-zinc-900/50 w-full px-4 hover:bg-zinc-900/75">
       <div className="flex items-center gap-2">
         <UserAvatar
+          onClick={handleUserClick}
           imageUrl={member?.profile?.imageUrl}
           name={member?.profile?.name}
         />
         <div className="flex items-center gap-x-1">
-          <h3 className="font-semibold dark:text-zinc-300 text-zinc-600">
+          <h3
+            onClick={handleUserClick}
+            className="transition-all hover:underline font-semibold dark:text-zinc-300 text-zinc-600"
+          >
             {checkFullName(member.profile.name)}
           </h3>
           <ActionTooltip description={member.role}>

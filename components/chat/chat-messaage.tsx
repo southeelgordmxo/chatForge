@@ -5,12 +5,8 @@ import { useChatQuery } from "@/hook/use-chat-query";
 import { Fragment } from "react";
 import { Loader2, ServerCrash } from "lucide-react";
 import ChatItem from "./chat-item";
-
-type MessagesWithMembersWithProfile = Message & {
-  member: Member & {
-    profile: Profile;
-  };
-};
+import { MessageWithMemberWithProfile } from "@/type";
+import { useChatSocket } from "@/hook/use-chat-socket";
 
 interface ChatMessageProps {
   name: string;
@@ -36,12 +32,21 @@ const ChatMessage = ({
   type,
 }: ChatMessageProps) => {
   const queryKey = `chat:${chatId}`;
+  const addKey = `chat:${chatId}:messages`;
+  const updateKey = `chat:${chatId}:messages:updated`;
 
   const { data, status } = useChatQuery({
     apiUrl,
     paramKey,
     paramValue,
     queryKey,
+  });
+  console.log(addKey, updateKey, queryKey);
+
+  useChatSocket({
+    addKey,
+    queryKey,
+    updateKey,
   });
 
   if (status === "pending") {
@@ -62,7 +67,7 @@ const ChatMessage = ({
   }
 
   return (
-    <div className="w-full flex-1 flex flex-col items-center py-4 overflow-y-hidden">
+    <div className="w-full flex-1 flex flex-col items-center py-4 overflow-y-auto">
       <div className="flex-1"></div>
       <div className="px-4 flex items-start w-full">
         <ChatWelcomeMessage name={name} type={type} />
@@ -71,7 +76,7 @@ const ChatMessage = ({
         {data?.pages.map((group, i) => {
           return (
             <Fragment key={i}>
-              {group?.data?.map((message: MessagesWithMembersWithProfile) => (
+              {group?.data?.map((message: MessageWithMemberWithProfile) => (
                 <ChatItem
                   key={message.id}
                   content={message.content}

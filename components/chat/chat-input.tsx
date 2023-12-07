@@ -56,7 +56,6 @@ const ChatInput = ({ name, query, type, apiUrl }: ChatInputProps) => {
 
     if (res.ok && resData.success) {
       form.reset();
-      router.refresh();
     } else {
       toast({
         title: resData.error,
