@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Welcome to ChatForge: Powering Real-Time Conversations
 
-## Getting Started
+![Chat Forge](./public/chatForge.png)
 
-First, run the development server:
+Join a revolution in communication with ChatForge. Seamlessly connect with friends, colleagues, and communities in real-time, fostering instant connections worldwide.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+[Visit to ChatForge](https://chatforge-production.up.railway.app)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **User Profiles👤**: Create user profiles with OAuth account or with credentials(using Clerk-OAuth provider).
+- **Real-time Messaging💬**: Communicate instantly via text, image, files within dedicated servers, channels and individual users in the server.
+- **Role-based Access🔒**: Only admin users can delete servers, manage users and more.
+- **Direct Messaging🎯**: Engage in private conversations between each user.
+- **Create-new groups in limitless and delete🖇️**: Every user can groups and add users to the groups. Also, group created user can delete the group.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Tech Stack
 
-## Learn More
+- **Next.js 14**
+- **Postgresql + Prisma** (Database and ODM)
+- **Shadcn-UI** (Re-usable Components library)
+- **Tailwind** (CSS styling)
+- **Clear** (OAuth)
+- **Tanstack** (Data fetching and pagination)
+- Other utilities library
 
-To learn more about Next.js, take a look at the following resources:
+## Installation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Clone the repository `git clone https://github.com/Kei-K23/chatForge.git`
+2. Navigate to the project directory: cd breeze
+3. Install dependencies:
+   ```bash
+    npm install
+   ```
+4. Set up environment variables properly:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Usage
 
-## Deploy on Vercel
+1. Start the application and it will start at `http://localhost:3000` locally:
+   ```bash
+    npm run dev
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Feature improvements and new features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Real-time notification system🔔
+- Make friends-request system between users🤝🏻
+- Add video and audio for better communication
+
+## Contributing
+
+Contributions are welcome and appreciate your contributions! You can add your own features or can implement feature improvements lists that mention above.
+
+## License
+
+This project is licensed under the [MIT License](./LICENSE) - see the LICENSE file for details.
+
+## Contact
+
+For any inquiries or support, please contact [Kei-K](https://github.com/Kei-K23).
