@@ -80,7 +80,7 @@ const ChannelIDPage = async ({ params }: ChannelIDPageProps) => {
           </div>
         </>
       )}
-      {channel.type === ChannelType.AUDIO && (
+      {/* {channel.type === ChannelType.AUDIO && (
         <div className="text-muted-foreground text-lg flex-1 flex items-center justify-center">
           Audio channel is not support yet! <Frown />
         </div>
@@ -89,13 +89,13 @@ const ChannelIDPage = async ({ params }: ChannelIDPageProps) => {
         <div className="text-muted-foreground text-lg flex-1 flex items-center justify-center">
           Video channel is not support yet! <Frown />
         </div>
-      )}
-      {/* {channel.type === ChannelType.AUDIO && (
+      )} */}
+      {channel.type === ChannelType.AUDIO && (
         <MediaRoom chatId={channel.id} video={false} audio={true} />
       )}
       {channel.type === ChannelType.VIDEO && (
         <MediaRoom chatId={channel.id} video={true} audio={true} />
-      )} */}
+      )}
     </div>
   );
 };
