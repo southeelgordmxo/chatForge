@@ -6,12 +6,22 @@ import { Separator } from "../ui/separator";
 import { ScrollArea } from "../ui/scroll-area";
 import NavigationItem from "./navigation-item";
 import { ModeToggle } from "../mode-toggle";
+import { redirect } from "next/navigation";
 
 const NavigationSidebar = async () => {
   const profile = await authProfile();
-
   if (!profile) {
     return redirectToSignIn();
+  }
+
+  const directMeServer = await db.server.findUnique({
+    where: {
+      name: `Direct Message.${profile.userId}`,
+    },
+  });
+
+  if (!directMeServer) {
+    return redirect("/");
   }
 
   const server = await db.server.findMany({
@@ -32,6 +42,11 @@ const NavigationSidebar = async () => {
       <NavigationAction />
       <Separator className="max-w-[47px] h-0.5 mx-auto dark:bg-zinc-800 bg-zinc-300" />
       <ScrollArea className="w-full flex-1">
+        <NavigationItem
+          id={directMeServer.id}
+          imageUrl={directMeServer?.imageUrl}
+          name={directMeServer?.name}
+        />
         {server.map((server) => (
           <NavigationItem
             key={server.id}

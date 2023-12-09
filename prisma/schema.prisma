@@ -18,14 +18,16 @@ model Profile {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  servers  Server[]
-  members  Member[]
-  channels Channel[]
+  servers   Server[]
+  members   Member[]
+  channels  Channel[]
+  friendOne Friend[]  @relation("friendOne")
+  friendTwo Friend[]  @relation("friendTwo")
 }
 
 model Server {
   id             String @id @default(uuid())
-  name           String
+  name           String @unique
   imageUrl       String @db.Text
   invitationCode String @unique
 
@@ -78,7 +80,7 @@ enum ChannelType {
 
 model Channel {
   id   String      @id @default(uuid())
-  name String
+  name String      @unique
   type ChannelType @default(TEXT)
 
   createdAt DateTime @default(now())
@@ -152,4 +154,26 @@ model DirectMessage {
 
   @@index([memberId])
   @@index([conversationId])
+}
+
+enum FriendStatus {
+  REQUESTABLE
+  PENDING
+  FRIENDED
+}
+
+model Friend {
+  id String @id @default(uuid())
+
+  friendOneId String
+  friendOne   Profile @relation("friendOne", fields: [friendOneId], references: [id], onDelete: Cascade)
+
+  friendTwoId String
+  friendTwo   Profile @relation("friendTwo", fields: [friendTwoId], references: [id], onDelete: Cascade)
+
+  status FriendStatus @default(REQUESTABLE)
+
+  @@unique([friendOneId, friendTwoId])
+  @@index([friendOneId])
+  @@index([friendTwoId])
 }

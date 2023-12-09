@@ -22,6 +22,18 @@ export async function POST(req: NextRequest) {
         }
       );
     }
+    if (name === "Direct Message") {
+      return new NextResponse(
+        JSON.stringify({
+          success: false,
+          error: "Serve name cannot be 'Direct Message'",
+        }),
+        {
+          status: 400,
+          statusText: "Bad request!",
+        }
+      );
+    }
 
     const server = await db.server.create({
       data: {

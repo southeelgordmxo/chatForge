@@ -19,7 +19,7 @@ export function useChatQuery({
   const { isConnected } = useSocket();
 
   async function fetchMessageFun({
-    pageParam,
+    pageParam, // pageParam mean message id or direct message id
   }: {
     pageParam: undefined | string | null;
   }) {
@@ -38,6 +38,7 @@ export function useChatQuery({
     return res.json();
   }
 
+  // pagination
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
     useInfiniteQuery({
       initialPageParam: null,
