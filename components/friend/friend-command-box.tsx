@@ -15,6 +15,7 @@ import ActionTooltip from "../action-tooltip";
 import { useModal } from "@/hook/use-modal-store";
 import { toast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
+import { checkFullName } from "@/lib/helper";
 
 interface FriendCommandBoxProps {
   users?: Profile[];
@@ -35,7 +36,7 @@ const FriendCommandBox = ({ users }: FriendCommandBoxProps) => {
   }
 
   async function handleOnClick(friendTwoId: string) {
-    const res = await fetch("/api/friends", {
+    const res = await fetch("/api/socket/friends", {
       method: "POST",
       body: JSON.stringify({ friendOneId: profileId, friendTwoId }),
     });
@@ -67,8 +68,9 @@ const FriendCommandBox = ({ users }: FriendCommandBoxProps) => {
               imageUrl={user.imageUrl}
               className="w-10 h-10"
             />
-            <h3 className="ml-2">{user.name}</h3>
-            {!friends?.some(
+            <h3 className="ml-2">{checkFullName(user.name)}</h3>
+            {friends &&
+            !friends?.some(
               (friend) =>
                 friend.friendOneId === user.id || friend.friendTwoId === user.id
             ) ? (

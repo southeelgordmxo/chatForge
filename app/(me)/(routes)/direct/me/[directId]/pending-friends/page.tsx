@@ -1,8 +1,9 @@
-import { ScrollArea } from "@/components/ui/scroll-area";
-import UserAvatar from "@/components/user-avatar";
+import FriendPending from "@/components/friend/friend-pending";
 import { authProfile } from "@/lib/auth-profile";
 import { db } from "@/lib/db.prisma";
 import { redirectToSignIn } from "@clerk/nextjs";
+import { FriendStatus } from "@prisma/client";
+
 import React from "react";
 
 const PendingFriends = async () => {
@@ -15,6 +16,7 @@ const PendingFriends = async () => {
   const friends = await db.friend.findMany({
     where: {
       OR: [{ friendOneId: profile.id }, { friendTwoId: profile.id }],
+      status: FriendStatus["PENDING"],
     },
     include: {
       friendOne: true,
@@ -28,21 +30,7 @@ const PendingFriends = async () => {
         Pending {friends.length > 1 ? "friends" : "friend"}: {friends.length}
       </h2>
 
-      <ScrollArea className="flex-1 my-6">
-        {friends?.map((friend) => {
-          const f =
-            friend.friendOne.id === profile.id
-              ? friend.friendTwo
-              : friend.friendOne;
-
-          return (
-            <div key={friend.id}>
-              <UserAvatar name={f.name} imageUrl={f.imageUrl} />
-              <h2>{f.name}</h2>
-            </div>
-          );
-        })}
-      </ScrollArea>
+      <FriendPending profile={profile} />
     </div>
   );
 };

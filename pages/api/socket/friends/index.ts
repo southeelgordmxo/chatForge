@@ -1,0 +1,243 @@
+import { authProfilePages } from "@/lib/auth-profile-pages";
+import { db } from "@/lib/db.prisma";
+import { NextApiResponseWithSocketIo } from "@/type";
+import { FriendStatus } from "@prisma/client";
+import { NextApiRequest } from "next";
+
+async function createFriendReq(
+  req: NextApiRequest,
+  res: NextApiResponseWithSocketIo
+) {
+  try {
+    const { friendOneId, friendTwoId } = JSON.parse(req.body);
+
+    console.log(friendOneId);
+
+    if (!friendOneId) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing friend one id!",
+      });
+    }
+
+    if (!friendTwoId) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing friend two id!",
+      });
+    }
+
+    const existingRelationship =
+      (await db.friend.findUnique({
+        where: {
+          friendOneId_friendTwoId: {
+            friendOneId,
+            friendTwoId,
+          },
+          status: FriendStatus["PENDING"],
+        },
+      })) ||
+      (await db.friend.findUnique({
+        where: {
+          friendOneId_friendTwoId: {
+            friendOneId,
+            friendTwoId,
+          },
+          status: FriendStatus["PENDING"],
+        },
+      }));
+
+    if (existingRelationship) {
+      return res.status(400).json({
+        success: false,
+        error: "Already sent friend request to this user!",
+      });
+    }
+
+    const friends = await db.friend.create({
+      data: {
+        friendOneId,
+        friendTwoId,
+        status: FriendStatus["PENDING"],
+      },
+    });
+
+    const friendKey = `fri:${friendOneId}${friendTwoId}:create`;
+
+    res?.socket?.server?.io.emit(friendKey, friends);
+
+    return res.status(200).json({ success: true, data: friends });
+  } catch (e: any) {
+    console.log(e);
+
+    return res.status(500).json({ success: false, error: e.message });
+  }
+}
+
+async function getFriendsRequest(
+  req: NextApiRequest,
+  res: NextApiResponseWithSocketIo
+) {
+  try {
+    const { userId } = req.query;
+
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing user id!",
+      });
+    }
+
+    const friends = await db.friend.findMany({
+      where: {
+        OR: [
+          { friendOneId: userId as string },
+          { friendTwoId: userId as string },
+        ],
+      },
+      include: {
+        friendOne: true,
+        friendTwo: true,
+      },
+    });
+
+    if (!friends) {
+      return res.status(400).json({
+        success: false,
+        error: "No friends yet!",
+      });
+    }
+
+    const friendKey = `fri:${userId}:get`;
+
+    res?.socket?.server?.io.emit(friendKey, friends);
+
+    return res.status(200).json({ success: true, data: friends });
+  } catch (e: any) {
+    return res.status(500).json({ success: false, error: e.message });
+  }
+}
+
+async function confirmFriendsRequest(
+  req: NextApiRequest,
+  res: NextApiResponseWithSocketIo
+) {
+  try {
+    const { friendOneId, friendTwoId } = JSON.parse(req.body);
+    console.log(friendOneId, "put");
+
+    if (!friendOneId) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing friend one id!",
+      });
+    }
+
+    if (!friendTwoId) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing friend two id!",
+      });
+    }
+
+    const friends = await db.friend.update({
+      where: {
+        friendOneId_friendTwoId: {
+          friendOneId,
+          friendTwoId,
+        },
+      },
+      data: {
+        status: FriendStatus["FRIENDED"],
+      },
+      include: {
+        friendOne: true,
+        friendTwo: true,
+      },
+    });
+
+    if (!friends) {
+      return res.status(400).json({
+        success: false,
+        error: "No friends yet!",
+      });
+    }
+
+    const friendKey = `fri:${friendOneId}${friendTwoId}:confirm`;
+
+    res?.socket?.server?.io.emit(friendKey, friends);
+
+    return res.status(200).json({ success: true, data: friends });
+  } catch (e: any) {
+    return res.status(500).json({ success: false, error: e.message });
+  }
+}
+
+async function cancelFriendsRequest(
+  req: NextApiRequest,
+  res: NextApiResponseWithSocketIo
+) {
+  try {
+    const { friendOneId, friendTwoId } = JSON.parse(req.body);
+
+    if (!friendOneId) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing friend one id!",
+      });
+    }
+
+    if (!friendTwoId) {
+      return res.status(400).json({
+        success: false,
+        error: "Missing friend two id!",
+      });
+    }
+
+    const friend = await db.friend.delete({
+      where: {
+        friendOneId_friendTwoId: {
+          friendOneId,
+          friendTwoId,
+        },
+      },
+    });
+
+    const friendKey = `fri:${friendOneId}${friendTwoId}:delete`;
+
+    res?.socket?.server?.io.emit(friendKey, friend);
+
+    return res.status(200).json({ success: true });
+  } catch (e: any) {
+    return res.status(500).json({ success: false, error: e.message });
+  }
+}
+
+export default async function handler(
+  req: NextApiRequest,
+  res: NextApiResponseWithSocketIo
+) {
+  const profile = await authProfilePages(req);
+
+  if (!profile) {
+    return res
+      .status(401)
+      .json({ success: false, error: "Unauthorized user!" });
+  }
+
+  if (req.method === "GET") {
+    getFriendsRequest(req, res);
+  }
+
+  if (req.method === "POST") {
+    await createFriendReq(req, res);
+  }
+
+  if (req.method === "PUT") {
+    await confirmFriendsRequest(req, res);
+  }
+
+  if (req.method === "DELETE") {
+    await cancelFriendsRequest(req, res);
+  }
+}
