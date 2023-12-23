@@ -10,17 +10,28 @@ import { Friend, Profile } from "@prisma/client";
 import { useFriendQuery } from "@/hook/use-friend-query";
 import { Skeleton } from "../ui/skeleton";
 import { toast } from "../ui/use-toast";
+import { useFriendSocket } from "@/hook/use-friend-socket";
 
 interface FriendPendingProps {
   profile: Profile;
 }
 
 const FriendPending = ({ profile }: FriendPendingProps) => {
-  const friendGetKey = `fri:${profile.id}:get`;
+  const getFriendKey = `fri:${profile.id}`;
+  const createFriendKey = `fri:${profile.id}:create`;
+  const resFriendKey = `fri:${profile.id}:res`;
+  const cancelFriendKey = `fri:${profile.id}:cancel`;
 
   const { data: friends, status } = useFriendQuery({
-    friendKey: friendGetKey,
+    friendKey: getFriendKey,
     userId: profile.id,
+  });
+
+  useFriendSocket({
+    getFriendKey,
+    resFriendKey,
+    createFriendKey,
+    cancelFriendKey,
   });
 
   async function handleConfirm(friendOneId: string, friendTwoId: string) {

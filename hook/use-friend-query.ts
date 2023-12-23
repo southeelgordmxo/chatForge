@@ -13,7 +13,7 @@ export function useFriendQuery({ friendKey, userId }: ChatQueryProps) {
 
   async function fetchFriendFun(): Promise<{
     success: boolean;
-    data: FriendsWithFriendOneAndFriendTwo;
+    data: FriendsWithFriendOneAndFriendTwo[];
   }> {
     const res = await fetch(`/api/socket/friends?userId=${userId}`, {});
     return res.json();

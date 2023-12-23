@@ -21,7 +21,7 @@ export type MessageWithMemberWithProfile = Message & {
   };
 };
 
-export type FriendsWithFriendOneAndFriendTwo = (Friend & {
+export type FriendsWithFriendOneAndFriendTwo = Friend & {
   friendOne: Profile;
   friendTwo: Profile;
-})[];
+};

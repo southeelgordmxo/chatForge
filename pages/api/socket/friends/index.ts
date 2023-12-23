@@ -11,8 +11,6 @@ async function createFriendReq(
   try {
     const { friendOneId, friendTwoId } = JSON.parse(req.body);
 
-    console.log(friendOneId);
-
     if (!friendOneId) {
       return res.status(400).json({
         success: false,
@@ -60,16 +58,20 @@ async function createFriendReq(
         friendTwoId,
         status: FriendStatus["PENDING"],
       },
+      include: {
+        friendOne: true,
+        friendTwo: true,
+      },
     });
 
-    const friendKey = `fri:${friendOneId}${friendTwoId}:create`;
+    const friendOneKey = `fri:${friendOneId}:create`;
+    res?.socket?.server?.io.emit(friendOneKey, friends);
 
-    res?.socket?.server?.io.emit(friendKey, friends);
+    const friendTwoKey = `fri:${friendTwoId}:create`;
+    res?.socket?.server?.io.emit(friendTwoKey, friends);
 
     return res.status(200).json({ success: true, data: friends });
   } catch (e: any) {
-    console.log(e);
-
     return res.status(500).json({ success: false, error: e.message });
   }
 }
@@ -108,10 +110,6 @@ async function getFriendsRequest(
       });
     }
 
-    const friendKey = `fri:${userId}:get`;
-
-    res?.socket?.server?.io.emit(friendKey, friends);
-
     return res.status(200).json({ success: true, data: friends });
   } catch (e: any) {
     return res.status(500).json({ success: false, error: e.message });
@@ -124,7 +122,6 @@ async function confirmFriendsRequest(
 ) {
   try {
     const { friendOneId, friendTwoId } = JSON.parse(req.body);
-    console.log(friendOneId, "put");
 
     if (!friendOneId) {
       return res.status(400).json({
@@ -163,9 +160,11 @@ async function confirmFriendsRequest(
       });
     }
 
-    const friendKey = `fri:${friendOneId}${friendTwoId}:confirm`;
+    const friendOneKey = `fri:${friendOneId}:res`;
+    res?.socket?.server?.io.emit(friendOneKey, friends);
 
-    res?.socket?.server?.io.emit(friendKey, friends);
+    const friendTwoKey = `fri:${friendTwoId}:res`;
+    res?.socket?.server?.io.emit(friendTwoKey, friends);
 
     return res.status(200).json({ success: true, data: friends });
   } catch (e: any) {
@@ -203,9 +202,11 @@ async function cancelFriendsRequest(
       },
     });
 
-    const friendKey = `fri:${friendOneId}${friendTwoId}:delete`;
+    const friendOneKey = `fri:${friendOneId}:cancel`;
+    res?.socket?.server?.io.emit(friendOneKey, friend);
 
-    res?.socket?.server?.io.emit(friendKey, friend);
+    const friendTwoKey = `fri:${friendTwoId}:cancel`;
+    res?.socket?.server?.io.emit(friendTwoKey, friend);
 
     return res.status(200).json({ success: true });
   } catch (e: any) {

@@ -23,9 +23,9 @@ interface FriendCommandBoxProps {
 
 const FriendCommandBox = ({ users }: FriendCommandBoxProps) => {
   const router = useRouter();
-  const { onOpen, data } = useModal();
+  const { onOpen, data, onClose } = useModal();
   const [isMounted, setIsMounted] = useState(false);
-  const { profileId, friends } = data;
+  const { profileId, friends = [] } = data;
 
   useEffect(() => {
     setIsMounted(true);
@@ -48,7 +48,7 @@ const FriendCommandBox = ({ users }: FriendCommandBoxProps) => {
       toast({
         title: "Friend request sent.",
       });
-      onOpen("addFriend", { users, profileId, friends: resData.data });
+      onClose();
     } else {
       toast({
         title: resData.error,
