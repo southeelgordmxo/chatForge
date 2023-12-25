@@ -7,6 +7,7 @@ import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { SocketProvider } from "@/components/providers/socket-provider";
 import QueryProvider from "@/components/providers/query-provider";
+import { authProfile } from "@/lib/auth-profile";
 
 const lato = Lato({
   subsets: ["latin"],
@@ -35,7 +36,7 @@ export const metadata: Metadata = {
   authors: [{ name: "Kei-K", url: "https://github.com/Kei-K23" }],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;

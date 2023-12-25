@@ -24,6 +24,7 @@ interface ChatHeaderProps {
   type: "channel" | "member";
   channel?: Channel;
   member?: Member & { profile: Profile };
+  profile?: Profile;
 }
 
 const channelIcons = {
@@ -44,26 +45,46 @@ const memberIcons = {
   [MemberType.GUEST]: <Shield className="w-4 h-4 ml-1 " />,
 };
 
-const ChatHeader = ({ channel, serverId, type, member }: ChatHeaderProps) => {
+const ChatHeader = ({
+  channel,
+  serverId,
+  type,
+  member,
+  profile,
+}: ChatHeaderProps) => {
   return (
     <div className="px-3 flex items-center gap-x-3 h-12 w-full font-semibold border-b dark:border-b-neutral-700 border-b-neutral-400">
       <MobileToggle serverId={serverId} />
       <p className="text-[19px] font-semibold flex items-center">
         {type === "channel" && channel && channelIcons[channel?.type]}
-        {type === "member" && member && (
+        {type === "member" && member ? (
           <UserAvatar
             imageUrl={member.profile.imageUrl}
             name={member.profile.name}
             className="w-10 h-10 rounded-full"
           />
+        ) : (
+          profile && (
+            <UserAvatar
+              imageUrl={profile.imageUrl}
+              name={profile.name}
+              className="w-10 h-10 rounded-full"
+            />
+          )
         )}
         {channel && channel?.name}
 
-        {member && (
+        {member ? (
           <p className="ml-2 flex items-center">
             {member && member.profile && checkFullName(member.profile.name)}
             {member && memberIcons[member.role]}
           </p>
+        ) : (
+          profile && (
+            <p className="ml-2 flex items-center">
+              {checkFullName(profile.name)}
+            </p>
+          )
         )}
       </p>
 

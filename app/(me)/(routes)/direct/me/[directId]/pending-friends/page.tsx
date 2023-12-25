@@ -4,7 +4,13 @@ import { redirectToSignIn } from "@clerk/nextjs";
 
 import React from "react";
 
-const PendingFriendsPage = async () => {
+interface PendingFriendsPageProps {
+  params: {
+    directId: string;
+  };
+}
+
+const PendingFriendsPage = async ({ params }: PendingFriendsPageProps) => {
   const profile = await authProfile();
 
   if (!profile) {
@@ -15,7 +21,7 @@ const PendingFriendsPage = async () => {
     <div className="flex flex-col px-5 py-3">
       <h2>Friends status</h2>
 
-      <FriendPending profile={profile} />
+      <FriendPending profile={profile} directId={params.directId} />
     </div>
   );
 };

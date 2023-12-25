@@ -5,7 +5,7 @@ import UserAvatar from "../user-avatar";
 import { ScrollArea } from "../ui/scroll-area";
 import { Button } from "../ui/button";
 import { checkFullName } from "@/lib/helper";
-import { Check, Gavel, Hourglass } from "lucide-react";
+import { Check, Gavel, Hourglass, Loader2 } from "lucide-react";
 import { Profile } from "@prisma/client";
 import { useFriendQuery } from "@/hook/use-friend-query";
 import { Skeleton } from "../ui/skeleton";
@@ -14,9 +14,10 @@ import { useFriendSocket } from "@/hook/use-friend-socket";
 
 interface FriendPendingProps {
   profile: Profile;
+  directId?: string;
 }
 
-const FriendPending = ({ profile }: FriendPendingProps) => {
+const FriendPending = ({ profile, directId }: FriendPendingProps) => {
   const [isLoading, setIsLoading] = useState(false);
   const getFriendKey = `fri:${profile.id}`;
   const createFriendKey = `fri:${profile.id}:create`;
@@ -40,7 +41,7 @@ const FriendPending = ({ profile }: FriendPendingProps) => {
       setIsLoading(true);
       const res = await fetch("/api/socket/friends", {
         method: "PUT",
-        body: JSON.stringify({ friendOneId, friendTwoId }),
+        body: JSON.stringify({ friendOneId, friendTwoId, directId }),
       });
       const data = await res.json();
 
@@ -128,8 +129,16 @@ const FriendPending = ({ profile }: FriendPendingProps) => {
                       handleConfirm(friend.friendOneId, friend.friendTwoId)
                     }
                   >
-                    <Check className="w-4 h-4 mr-1" />
-                    Confirm
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="animate-spin w-4 h-4 mr-1" />
+                      </>
+                    ) : (
+                      <>
+                        <Check className="w-4 h-4 mr-1" />
+                        Confirm
+                      </>
+                    )}
                   </Button>
                   <Button
                     size={"sm"}
@@ -138,8 +147,16 @@ const FriendPending = ({ profile }: FriendPendingProps) => {
                       handleCancel(friend.friendOneId, friend.friendTwoId)
                     }
                   >
-                    <Gavel className="w-4 h-4 mr-1" />
-                    Cancel
+                    {isLoading ? (
+                      <>
+                        <Loader2 className="animate-spin w-4 h-4 mr-1" />
+                      </>
+                    ) : (
+                      <>
+                        <Gavel className="w-4 h-4 mr-1" />
+                        Cancel
+                      </>
+                    )}
                   </Button>
                 </div>
               )}

@@ -38,7 +38,8 @@ interface ChatItemProps {
   timestamp: string;
   socketUrl: string;
   socketQuery: Record<string, any>;
-  currentMember: Member;
+  currentMember?: Member;
+  currentProfile?: Profile;
   member: Member & {
     profile: Profile;
   };
@@ -53,6 +54,7 @@ const formSchema = z.object({
 const ChatItem = ({
   content,
   currentMember,
+  currentProfile,
   deleted,
   fileUrl,
   isUpdated,
@@ -71,9 +73,15 @@ const ChatItem = ({
 
   const isImage = fileUrl && checkImageType(fileExt);
   const isPDF = !isImage && fileUrl;
-  const isOwner = currentMember.id === member.id;
-  const isAdmin = currentMember.role === MemberType.ADMIN;
-  const isModerator = currentMember.role === MemberType.MODERATOR;
+  const isOwner = currentMember?.id === member.id;
+  const isOwnerForFriendCon = currentProfile?.id === member.id;
+  const isForFriendCon = !!currentProfile;
+  const isAdmin = isForFriendCon
+    ? isOwnerForFriendCon
+    : currentMember?.role === MemberType.ADMIN;
+  const isModerator = isForFriendCon
+    ? isOwnerForFriendCon
+    : currentMember?.role === MemberType.MODERATOR;
   const deletable = !deleted && (isAdmin || isModerator || isOwner);
   const editable = !deleted && isOwner && !fileUrl;
 
@@ -139,7 +147,11 @@ const ChatItem = ({
   }, [content]);
 
   function handleUserClick() {
-    if (currentMember.id === member.id) {
+    if (isForFriendCon) {
+      return;
+    }
+
+    if (currentMember?.id === member.id) {
       return;
     }
 
@@ -167,9 +179,11 @@ const ChatItem = ({
           >
             {checkFullName(member.profile.name)}
           </h3>
-          <ActionTooltip description={member.role}>
-            {memberIcons[member.role]}
-          </ActionTooltip>
+          {!isForFriendCon && (
+            <ActionTooltip description={member.role}>
+              {memberIcons[member.role]}
+            </ActionTooltip>
+          )}
           <span className="text-sm dark:text-zinc-400 text-zinc-700">
             {timestamp}
           </span>

@@ -10,7 +10,12 @@ export async function findOrCreateConversation(
     (await findConversation(memberTwoId, memberOneId));
 
   if (!existingConversation) {
-    return await createNewConversation(memberOneId, memberTwoId);
+    const newConversation = await createNewConversation(
+      memberOneId,
+      memberTwoId
+    );
+
+    return newConversation;
   }
 
   return existingConversation;
@@ -41,6 +46,8 @@ export async function createNewConversation(
       },
     });
   } catch (e) {
+    console.log(e);
+
     return null;
   }
 }

@@ -23,6 +23,9 @@ model Profile {
   channels  Channel[]
   friendOne Friend[]  @relation("friendOne")
   friendTwo Friend[]  @relation("friendTwo")
+
+  // conversationFriendOne ConversationForFriends[] @relation("conversationFriendOne")
+  // conversationFriendTwo ConversationForFriends[] @relation("conversationFriendTwo")
 }
 
 model Server {
@@ -135,6 +138,22 @@ model Conversation {
   @@index([memberTwoId])
 }
 
+// model ConversationForFriends {
+//   id String @id @default(uuid())
+
+//   conversationFriendOneId String
+//   conversationFriendOne   Profile @relation("conversationFriendOne", fields: [conversationFriendOneId], references: [id], onDelete: Cascade)
+
+//   conversationFriendTwoId String
+//   conversationFriendTwo   Profile @relation("conversationFriendTwo", fields: [conversationFriendTwoId], references: [id], onDelete: Cascade)
+
+//   directMessages DirectMessage[]
+
+//   @@unique([conversationFriendOneId, conversationFriendTwoId])
+//   @@index([conversationFriendOneId])
+//   @@index([conversationFriendTwoId])
+// }
+
 model DirectMessage {
   id      String @id @default(uuid())
   content String @db.Text
@@ -144,13 +163,16 @@ model DirectMessage {
   memberId String
   member   Member @relation(fields: [memberId], references: [id], onDelete: Cascade)
 
-  conversationId String
-  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  conversationId String?
+  conversation   Conversation? @relation(fields: [conversationId], references: [id], onDelete: Cascade)
 
   deleted Boolean? @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // ConversationForFriends   ConversationForFriends? @relation(fields: [conversationForFriendsId], references: [id])
+  conversationForFriendsId String?
 
   @@index([memberId])
   @@index([conversationId])

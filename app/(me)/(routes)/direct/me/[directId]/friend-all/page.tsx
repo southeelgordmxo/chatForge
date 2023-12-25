@@ -4,7 +4,13 @@ import { redirectToSignIn } from "@clerk/nextjs";
 
 import React from "react";
 
-const AllFriendsPage = async () => {
+interface AllFriendsPageProps {
+  params: {
+    directId: string;
+  };
+}
+
+const AllFriendsPage = async ({ params }: AllFriendsPageProps) => {
   const profile = await authProfile();
 
   if (!profile) {
@@ -15,7 +21,7 @@ const AllFriendsPage = async () => {
     <div className="flex flex-col px-5 py-3">
       <h2>All Friends</h2>
 
-      <FriendAll profile={profile} />
+      <FriendAll profile={profile} directId={params.directId} />
     </div>
   );
 };

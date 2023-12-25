@@ -12,18 +12,22 @@ import { Skeleton } from "../ui/skeleton";
 import { toast } from "../ui/use-toast";
 import { useFriendSocket } from "@/hook/use-friend-socket";
 import ActionTooltip from "../action-tooltip";
+import { useSocket } from "../providers/socket-provider";
+import { useRouter } from "next/navigation";
 
 interface FriendAllProps {
   profile: Profile;
+  directId?: string;
 }
 
-const FriendAll = ({ profile }: FriendAllProps) => {
+const FriendAll = ({ profile, directId }: FriendAllProps) => {
   const getFriendKey = `fri:${profile.id}`;
   const createFriendKey = `fri:${profile.id}:create`;
   const resFriendKey = `fri:${profile.id}:res`;
   const cancelFriendKey = `fri:${profile.id}:cancel`;
 
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
   const { data: friends, status } = useFriendQuery({
     friendKey: getFriendKey,
     userId: profile.id,
@@ -87,7 +91,14 @@ const FriendAll = ({ profile }: FriendAllProps) => {
               <h2>{checkFullName(f.name)}</h2>
               <div className="flex items-center gap-x-3 ml-auto">
                 <ActionTooltip description="Chat">
-                  <MessageCircle className="cursor-pointer w-6 h-6 mr-1" />
+                  <MessageCircle
+                    className="cursor-pointer w-6 h-6 mr-1"
+                    onClick={() =>
+                      router.push(
+                        `/direct/me/${directId}/friend-conversation/${f.id}`
+                      )
+                    }
+                  />
                 </ActionTooltip>
 
                 <Button

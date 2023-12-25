@@ -118,10 +118,11 @@ async function getFriendsRequest(
 
 async function confirmFriendsRequest(
   req: NextApiRequest,
-  res: NextApiResponseWithSocketIo
+  res: NextApiResponseWithSocketIo,
+  profileId: string
 ) {
   try {
-    const { friendOneId, friendTwoId } = JSON.parse(req.body);
+    const { friendOneId, friendTwoId, directId } = JSON.parse(req.body);
 
     if (!friendOneId) {
       return res.status(400).json({
@@ -160,6 +161,19 @@ async function confirmFriendsRequest(
         error: "No friends yet!",
       });
     }
+
+    await db.server.update({
+      where: {
+        id: directId as string,
+      },
+      data: {
+        members: {
+          create: {
+            profileId,
+          },
+        },
+      },
+    });
 
     const friendOneKey = `fri:${friendOneId}:res`;
     res?.socket?.server?.io.emit(friendOneKey, friends);
@@ -240,7 +254,7 @@ export default async function handler(
   }
 
   if (req.method === "PUT") {
-    await confirmFriendsRequest(req, res);
+    await confirmFriendsRequest(req, res, profile.id);
   }
 
   if (req.method === "DELETE") {

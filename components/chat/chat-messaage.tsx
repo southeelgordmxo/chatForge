@@ -11,7 +11,8 @@ import { useChatScroll } from "./chat-scroll";
 
 interface ChatMessageProps {
   name: string;
-  member: Member & { profile: Profile };
+  member?: Member & { profile: Profile };
+  profile?: Profile;
   chatId: string;
   apiUrl: string;
   socketUrl: string;
@@ -25,6 +26,7 @@ const ChatMessage = ({
   apiUrl,
   chatId,
   member,
+  profile,
   name,
   paramKey,
   paramValue,
@@ -111,6 +113,7 @@ const ChatMessage = ({
                 <ChatItem
                   key={message.id}
                   content={message.content}
+                  currentProfile={profile}
                   currentMember={member}
                   member={message.member}
                   deleted={message.deleted}

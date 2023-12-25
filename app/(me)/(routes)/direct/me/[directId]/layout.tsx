@@ -1,4 +1,3 @@
-import FriendHeader from "@/components/friend/friend-header";
 import FriendSidebar from "@/components/friend/friend-sidebar";
 import { authProfile } from "@/lib/auth-profile";
 import { db } from "@/lib/db.prisma";
@@ -41,7 +40,7 @@ const DirectMessageMeLayout = async ({
         />
       </div>
       <div className="h-full md:pl-64">
-        <FriendHeader directMessageName={`Direct Message.${profile.userId}`} />
+        {/* <FriendHeader directMessageName={`Direct Message.${profile.userId}`} /> */}
         {children}
       </div>
     </div>
