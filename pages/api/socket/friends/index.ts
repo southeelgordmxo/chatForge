@@ -143,6 +143,7 @@ async function confirmFriendsRequest(
           friendOneId,
           friendTwoId,
         },
+        status: FriendStatus["PENDING"],
       },
       data: {
         status: FriendStatus["FRIENDED"],
@@ -199,6 +200,10 @@ async function cancelFriendsRequest(
           friendOneId,
           friendTwoId,
         },
+        OR: [
+          { status: FriendStatus["FRIENDED"] },
+          { status: FriendStatus["PENDING"] },
+        ],
       },
     });
 

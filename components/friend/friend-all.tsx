@@ -5,24 +5,25 @@ import UserAvatar from "../user-avatar";
 import { ScrollArea } from "../ui/scroll-area";
 import { Button } from "../ui/button";
 import { checkFullName } from "@/lib/helper";
-import { Check, Gavel, Hourglass } from "lucide-react";
+import { Loader2, MessageCircle, UserX } from "lucide-react";
 import { Profile } from "@prisma/client";
 import { useFriendQuery } from "@/hook/use-friend-query";
 import { Skeleton } from "../ui/skeleton";
 import { toast } from "../ui/use-toast";
 import { useFriendSocket } from "@/hook/use-friend-socket";
+import ActionTooltip from "../action-tooltip";
 
-interface FriendPendingProps {
+interface FriendAllProps {
   profile: Profile;
 }
 
-const FriendPending = ({ profile }: FriendPendingProps) => {
-  const [isLoading, setIsLoading] = useState(false);
+const FriendAll = ({ profile }: FriendAllProps) => {
   const getFriendKey = `fri:${profile.id}`;
   const createFriendKey = `fri:${profile.id}:create`;
   const resFriendKey = `fri:${profile.id}:res`;
   const cancelFriendKey = `fri:${profile.id}:cancel`;
 
+  const [isLoading, setIsLoading] = useState(false);
   const { data: friends, status } = useFriendQuery({
     friendKey: getFriendKey,
     userId: profile.id,
@@ -35,34 +36,6 @@ const FriendPending = ({ profile }: FriendPendingProps) => {
     cancelFriendKey,
   });
 
-  async function handleConfirm(friendOneId: string, friendTwoId: string) {
-    try {
-      setIsLoading(true);
-      const res = await fetch("/api/socket/friends", {
-        method: "PUT",
-        body: JSON.stringify({ friendOneId, friendTwoId }),
-      });
-      const data = await res.json();
-
-      if (res.ok && data.success) {
-        toast({
-          title: "Successfully confirm",
-        });
-      } else {
-        toast({
-          title: data.error,
-        });
-      }
-    } catch (e: any) {
-      setIsLoading(true);
-      toast({
-        title: "Something went wrong",
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
   async function handleCancel(friendOneId: string, friendTwoId: string) {
     try {
       setIsLoading(true);
@@ -74,7 +47,7 @@ const FriendPending = ({ profile }: FriendPendingProps) => {
 
       if (res.ok && data.success) {
         toast({
-          title: "Successfully cancel friend request",
+          title: "Successfully unfriend!",
         });
       } else {
         toast({
@@ -98,7 +71,7 @@ const FriendPending = ({ profile }: FriendPendingProps) => {
           <Skeleton key={n} className="w-full h-[30px] my-4" />
         ))}
       {friends?.data
-        ?.filter((f) => f.status === "PENDING")
+        ?.filter((f) => f.status === "FRIENDED")
         .map((friend) => {
           const f =
             friend.friendOne.id === profile.id
@@ -112,37 +85,31 @@ const FriendPending = ({ profile }: FriendPendingProps) => {
             >
               <UserAvatar name={f.name} imageUrl={f.imageUrl} />
               <h2>{checkFullName(f.name)}</h2>
-              {friend.friendOneId === profile.id ? (
+              <div className="flex items-center gap-x-3 ml-auto">
+                <ActionTooltip description="Chat">
+                  <MessageCircle className="cursor-pointer w-6 h-6 mr-1" />
+                </ActionTooltip>
+
                 <Button
+                  disabled={isLoading}
                   size={"sm"}
-                  className="ml-4 transition-all bg-yellow-400 hover:bg-yellow-400"
+                  className="transition-all bg-red-600 hover:bg-red-700"
+                  onClick={() =>
+                    handleCancel(friend.friendOneId, friend.friendTwoId)
+                  }
                 >
-                  <Hourglass className="w-4 h-4 mr-1" /> Pending
+                  {isLoading ? (
+                    <>
+                      <Loader2 className="animate-spin w-4 h-4 mr-1" />
+                    </>
+                  ) : (
+                    <>
+                      <UserX className="w-4 h-4 mr-1" />
+                      Unfriend
+                    </>
+                  )}
                 </Button>
-              ) : (
-                <div className="flex items-center gap-x-2 ml-4">
-                  <Button
-                    size={"sm"}
-                    className="transition-all bg-emerald-500 hover:bg-emerald-600"
-                    onClick={() =>
-                      handleConfirm(friend.friendOneId, friend.friendTwoId)
-                    }
-                  >
-                    <Check className="w-4 h-4 mr-1" />
-                    Confirm
-                  </Button>
-                  <Button
-                    size={"sm"}
-                    className="transition-all bg-red-600 hover:bg-red-700"
-                    onClick={() =>
-                      handleCancel(friend.friendOneId, friend.friendTwoId)
-                    }
-                  >
-                    <Gavel className="w-4 h-4 mr-1" />
-                    Cancel
-                  </Button>
-                </div>
-              )}
+              </div>
             </div>
           );
         })}
@@ -150,4 +117,4 @@ const FriendPending = ({ profile }: FriendPendingProps) => {
   );
 };
 
-export default FriendPending;
+export default FriendAll;

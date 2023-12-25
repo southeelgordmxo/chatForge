@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Loader2, User } from "lucide-react";
+import { User } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useModal } from "@/hook/use-modal-store";
 import FriendCommandBox from "../friend/friend-command-box";
@@ -15,7 +15,7 @@ import FriendCommandBox from "../friend/friend-command-box";
 const AddFriendModal = () => {
   const router = useRouter();
   const { isOpen, onClose, type, data } = useModal();
-  const { users } = data;
+  const { users, status } = data;
   const isModalOpen = isOpen && type === "addFriend";
 
   return (
@@ -29,7 +29,7 @@ const AddFriendModal = () => {
             Make friend with other people
           </DialogDescription>
         </DialogHeader>
-        <FriendCommandBox users={users} />
+        <FriendCommandBox users={users} status={status} />
       </DialogContent>
     </Dialog>
   );

@@ -1,3 +1,4 @@
+import { FriendsWithFriendOneAndFriendTwo } from "@/type";
 import { Channel, ChannelType, Friend, Profile, Server } from "@prisma/client";
 import { create } from "zustand";
 
@@ -23,7 +24,8 @@ interface ModalData {
   users?: Profile[];
   query?: Record<string, any>;
   profileId?: string;
-  friends?: Friend[];
+  friends?: FriendsWithFriendOneAndFriendTwo[];
+  status?: "error" | "success" | "pending";
 }
 interface ModalStore {
   type: ModalType | null;

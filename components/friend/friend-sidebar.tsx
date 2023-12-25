@@ -1,5 +1,5 @@
 import { authProfile } from "@/lib/auth-profile";
-import { redirectToSignIn } from "@clerk/nextjs";
+import { redirectToSignIn, useUser } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import FriendAction from "./friend-action";
 import { Separator } from "../ui/separator";

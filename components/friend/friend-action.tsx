@@ -1,4 +1,5 @@
 "use client";
+import { useFriendQuery } from "@/hook/use-friend-query";
 import { useModal } from "@/hook/use-modal-store";
 import { cn } from "@/lib/utils";
 import { Friend, Profile } from "@prisma/client";
@@ -13,16 +14,18 @@ interface FriendActionProps {
   directId: string;
 }
 
-const FriendAction = ({
-  users,
-  profileId,
-  friends,
-  directId,
-}: FriendActionProps) => {
+const FriendAction = ({ users, profileId, directId }: FriendActionProps) => {
+  const getFriendKey = `fri:${profileId}`;
+
   const router = useRouter();
   const path = usePathname();
   const currentPath = path?.split("/")[4];
   const { onOpen } = useModal();
+
+  const { data: friends, status } = useFriendQuery({
+    friendKey: getFriendKey,
+    userId: profileId,
+  });
 
   return (
     <div className="flex flex-col jun w-full gap-y-2 my-3 ">
@@ -30,7 +33,14 @@ const FriendAction = ({
         className={cn(
           "w-full flex items-center justify-between dark:bg-zinc-800 bg-[#cacacf] hover:bg-[#bcbcc9] p-2 dark:hover:bg-zinc-700 transition-colors rounded-md"
         )}
-        onClick={() => onOpen("addFriend", { users, profileId, friends })}
+        onClick={() =>
+          onOpen("addFriend", {
+            users,
+            profileId,
+            friends: friends?.data,
+            status,
+          })
+        }
       >
         {" "}
         <UserPlus className="w-5 h-5" /> Add friend
