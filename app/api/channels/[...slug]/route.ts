@@ -176,9 +176,7 @@ export async function DELETE(
         channels: {
           delete: {
             id: params.slug["0"],
-            name: {
-              not: "general",
-            },
+            NOT: [{ name: "general" }],
           },
         },
       },
