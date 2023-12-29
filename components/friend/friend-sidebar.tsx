@@ -6,14 +6,12 @@ import { Separator } from "../ui/separator";
 import { db } from "@/lib/db.prisma";
 
 interface FriendSidebarProps {
-  directMessageName: string;
+  serverId: string;
   directId: string;
 }
 
-const FriendSidebar = async ({
-  directMessageName,
-  directId,
-}: FriendSidebarProps) => {
+const FriendSidebar = async ({ serverId, directId }: FriendSidebarProps) => {
+  const adminID = process.env.NEXT_PUBLIC_ADMIN_ID as string;
   const profile = await authProfile();
 
   if (!profile) {
@@ -22,9 +20,14 @@ const FriendSidebar = async ({
 
   const users = await db.profile.findMany({
     where: {
-      userId: {
-        not: profile.userId,
-      },
+      NOT: [
+        {
+          userId: profile.userId,
+        },
+        {
+          userId: adminID,
+        },
+      ],
     },
   });
 
@@ -34,7 +37,7 @@ const FriendSidebar = async ({
     },
   });
 
-  if (!directMessageName) {
+  if (!serverId) {
     return redirect("/");
   }
 

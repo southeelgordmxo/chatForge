@@ -9,9 +9,9 @@ export default async function SetupPage() {
     return redirect("/");
   }
 
-  const directMe = await initialServerSetup(user);
+  const server = await initialServerSetup(user);
 
-  if (directMe) {
-    return redirect(`/direct/me/${directMe?.id}`);
+  if (server) {
+    return redirect(`/direct/me/${server?.id}`);
   }
 }

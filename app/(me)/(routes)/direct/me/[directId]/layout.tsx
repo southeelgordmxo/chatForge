@@ -23,7 +23,7 @@ const DirectMessageMeLayout = async ({
   const server = await db.server.findUnique({
     where: {
       id: params.directId,
-      name: `Direct Message.${profile.userId}`,
+      name: "ChatForge",
     },
   });
 
@@ -34,15 +34,9 @@ const DirectMessageMeLayout = async ({
   return (
     <div className="h-full">
       <div className="hidden h-full w-64 z-20 md:flex flex-col items-center fixed inset-y-0">
-        <FriendSidebar
-          directMessageName={`Direct Message.${profile.userId}`}
-          directId={params.directId}
-        />
+        <FriendSidebar serverId={server.id} directId={params.directId} />
       </div>
-      <div className="h-full md:pl-64">
-        {/* <FriendHeader directMessageName={`Direct Message.${profile.userId}`} /> */}
-        {children}
-      </div>
+      <div className="h-full md:pl-64">{children}</div>
     </div>
   );
 };

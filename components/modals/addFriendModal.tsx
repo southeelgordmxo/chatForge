@@ -13,7 +13,6 @@ import { useModal } from "@/hook/use-modal-store";
 import FriendCommandBox from "../friend/friend-command-box";
 
 const AddFriendModal = () => {
-  const router = useRouter();
   const { isOpen, onClose, type, data } = useModal();
   const { users, status } = data;
   const isModalOpen = isOpen && type === "addFriend";

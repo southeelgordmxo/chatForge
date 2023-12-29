@@ -23,9 +23,6 @@ model Profile {
   channels  Channel[]
   friendOne Friend[]  @relation("friendOne")
   friendTwo Friend[]  @relation("friendTwo")
-
-  // conversationFriendOne ConversationForFriends[] @relation("conversationFriendOne")
-  // conversationFriendTwo ConversationForFriends[] @relation("conversationFriendTwo")
 }
 
 model Server {
@@ -137,22 +134,6 @@ model Conversation {
   @@index([memberOneId])
   @@index([memberTwoId])
 }
-
-// model ConversationForFriends {
-//   id String @id @default(uuid())
-
-//   conversationFriendOneId String
-//   conversationFriendOne   Profile @relation("conversationFriendOne", fields: [conversationFriendOneId], references: [id], onDelete: Cascade)
-
-//   conversationFriendTwoId String
-//   conversationFriendTwo   Profile @relation("conversationFriendTwo", fields: [conversationFriendTwoId], references: [id], onDelete: Cascade)
-
-//   directMessages DirectMessage[]
-
-//   @@unique([conversationFriendOneId, conversationFriendTwoId])
-//   @@index([conversationFriendOneId])
-//   @@index([conversationFriendTwoId])
-// }
 
 model DirectMessage {
   id      String @id @default(uuid())
