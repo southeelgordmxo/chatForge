@@ -3,6 +3,7 @@ import { Message } from "@prisma/client";
 import { authProfile } from "@/lib/auth-profile";
 import { db } from "@/lib/db.prisma";
 
+// default retrieve item limit
 const MESSAGES_BATCH = 10;
 
 export async function GET(req: Request) {
@@ -10,6 +11,7 @@ export async function GET(req: Request) {
     const profile = await authProfile();
     const { searchParams } = new URL(req.url);
 
+    // cursor mean message id or direct message id
     const cursor = searchParams.get("cursor");
     const channelId = searchParams.get("channelId");
 
@@ -41,6 +43,7 @@ export async function GET(req: Request) {
 
     let messages: Message[] = [];
 
+    // for initial fetching there will not be cursor value
     if (cursor) {
       messages = await db.message.findMany({
         take: MESSAGES_BATCH,
@@ -81,6 +84,7 @@ export async function GET(req: Request) {
       });
     }
 
+    // lastPage nextCursor value in useChatQuery
     let nextCursor = null;
 
     if (messages.length === MESSAGES_BATCH) {

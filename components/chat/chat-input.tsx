@@ -11,7 +11,6 @@ import ActionTooltip from "../action-tooltip";
 import qs from "query-string";
 import { useModal } from "@/hook/use-modal-store";
 import EmojiPicker from "../emoji-picker";
-import { useRef } from "react";
 
 interface ChatInputProps {
   apiUrl?: string;

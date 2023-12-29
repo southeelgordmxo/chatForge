@@ -17,7 +17,9 @@ export function useChatScroll({
   shouldLoadMore,
   topChatRef,
 }: ChatScrollProps) {
+  // state to handle scroll to view when first page load
   const [hasInitialized, setHasInitialized] = useState(false);
+
   // useEffect for scroll top to load more messages if have previous messages to view
   useEffect(() => {
     const topDiv = topChatRef?.current;
@@ -25,6 +27,7 @@ export function useChatScroll({
     function handScroll() {
       const scrollTop = topDiv?.scrollTop;
 
+      // fetch next page when topDiv ref reach to top
       if (scrollTop === 0 && shouldLoadMore) {
         loadMoreMessages();
       }

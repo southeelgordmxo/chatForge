@@ -28,9 +28,14 @@ import { useModal } from "@/hook/use-modal-store";
 import { toast } from "../ui/use-toast";
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Server name must be at least 2 characters.",
-  }),
+  name: z
+    .string()
+    .min(2, {
+      message: "Server name must be at least 2 characters.",
+    })
+    .refine((data) => data !== "Direct Message", {
+      message: "Serve name cannot be 'Direct Message'",
+    }),
   imageUrl: z.string(),
 });
 

@@ -1,4 +1,5 @@
-import { Channel, ChannelType, Server } from "@prisma/client";
+import { FriendsWithFriendOneAndFriendTwo } from "@/type";
+import { Channel, ChannelType, Friend, Profile, Server } from "@prisma/client";
 import { create } from "zustand";
 
 export type ModalType =
@@ -12,14 +13,21 @@ export type ModalType =
   | "editChannel"
   | "deleteChannel"
   | "messageFile"
-  | "deleteMessage";
+  | "deleteMessage"
+  | "addFriend"
+  | "unFriend";
 
 interface ModalData {
   server?: Server;
   channelType?: ChannelType;
   channel?: Channel;
   apiUrl?: string;
+  users?: Profile[];
   query?: Record<string, any>;
+  profileId?: string;
+  friends?: FriendsWithFriendOneAndFriendTwo[];
+  unfriends?: { friendOneId: string; friendTwoId: string };
+  status?: "error" | "success" | "pending";
 }
 interface ModalStore {
   type: ModalType | null;
