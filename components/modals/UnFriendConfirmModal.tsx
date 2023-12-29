@@ -8,42 +8,42 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Loader2, Trash, X } from "lucide-react";
+import { Loader2, UserX } from "lucide-react";
 import { useModal } from "@/hook/use-modal-store";
 import { Button } from "../ui/button";
 import { useState } from "react";
 import { toast } from "../ui/use-toast";
-import qs from "query-string";
 
-const DeleteMessageModal = () => {
+const UnFriendConfirmModal = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { isOpen, onClose, type, data } = useModal();
-  const { server, apiUrl, query } = data;
-  const isModalOpen = isOpen && type === "deleteMessage";
+  const { unfriends } = data;
+  const isModalOpen = isOpen && type === "unFriend";
 
-  async function handleLeaveServer() {
-    const url = qs.stringifyUrl({
-      url: apiUrl || "",
-      query,
-    });
-
+  async function handleCancel(friendOneId?: string, friendTwoId?: string) {
     try {
       setIsLoading(true);
-      const resServer = await fetch(url, {
+      const res = await fetch("/api/socket/friends", {
         method: "DELETE",
-        cache: "no-cache",
+        body: JSON.stringify({ friendOneId, friendTwoId }),
       });
-      const dataServer = await resServer.json();
+      const data = await res.json();
 
-      if (resServer.ok && dataServer.success) {
+      if (res.ok && data.success) {
+        toast({
+          title: "Successfully unfriend!",
+        });
         onClose();
-        toast({ title: `Successfully deleted the message` });
       } else {
-        toast({ title: dataServer.error });
+        toast({
+          title: data.error,
+        });
       }
     } catch (e: any) {
       setIsLoading(true);
-      toast({ title: e.message });
+      toast({
+        title: "Something went wrong",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -54,16 +54,13 @@ const DeleteMessageModal = () => {
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="text-xl md:text-2xl flex items-center gap-2 justify-center">
-            Delete the message
-            <Trash className="w-5 h-5 md:w-9 md:h-9 text-red-500" />
+            Unfriend
+            <UserX className="w-5 h-5 md:w-9 md:h-9 text-red-500" />
           </DialogTitle>
           <DialogDescription className="text-center text-lg">
-            <p>
-              Are you sure you want to delete the server&apos;s{" "}
-              <span className="text-indigo-500">{server?.name}</span> <br />
-            </p>
+            <p>Are you sure you want to unfriend?</p>
             <h3 className="text-red-500 text-center">
-              This will delete permanently this message!
+              This will delete all data!
             </h3>
           </DialogDescription>
           <div className="flex flex-col items-start">
@@ -74,13 +71,18 @@ const DeleteMessageModal = () => {
               <Button
                 variant={"destructive"}
                 disabled={isLoading}
-                onClick={handleLeaveServer}
+                onClick={async () =>
+                  await handleCancel(
+                    unfriends?.friendOneId,
+                    unfriends?.friendTwoId
+                  )
+                }
               >
                 Confirm
                 {isLoading ? (
                   <Loader2 className="animate-spin w-4 h-4 ml-2" />
                 ) : (
-                  <Trash className="w-4 h-4 ml-2" />
+                  <UserX className="w-4 h-4 ml-2" />
                 )}
               </Button>
             </DialogFooter>
@@ -91,4 +93,4 @@ const DeleteMessageModal = () => {
   );
 };
 
-export default DeleteMessageModal;
+export default UnFriendConfirmModal;

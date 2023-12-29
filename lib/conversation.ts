@@ -46,8 +46,6 @@ export async function createNewConversation(
       },
     });
   } catch (e) {
-    console.log(e);
-
     return null;
   }
 }

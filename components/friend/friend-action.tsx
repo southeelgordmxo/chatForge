@@ -57,15 +57,6 @@ const FriendAction = ({ users, profileId, directId }: FriendActionProps) => {
       <button
         className={cn(
           "w-full flex items-center justify-between dark:bg-zinc-800 bg-[#cacacf] hover:bg-[#bcbcc9] p-2 dark:hover:bg-zinc-700 transition-colors rounded-md",
-          currentPath === "online-friends" && "bg-[#bcbcc9]  dark:bg-zinc-700"
-        )}
-        onClick={() => router.push(`/direct/me/${directId}/online-friends`)}
-      >
-        <ActivitySquare className="w-5 h-5" /> Online friends
-      </button>
-      <button
-        className={cn(
-          "w-full flex items-center justify-between dark:bg-zinc-800 bg-[#cacacf] hover:bg-[#bcbcc9] p-2 dark:hover:bg-zinc-700 transition-colors rounded-md",
           currentPath === "pending-friends" && "bg-[#bcbcc9]  dark:bg-zinc-700"
         )}
         onClick={() => router.push(`/direct/me/${directId}/pending-friends`)}

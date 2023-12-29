@@ -2,6 +2,12 @@
   "name": "chatforge_real_time_chat_app1.12.23",
   "version": "0.1.0",
   "private": true,
+  "license": "MIT",
+  "author": "KeiK",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Kei-K23/chatForge"
+  },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
   },

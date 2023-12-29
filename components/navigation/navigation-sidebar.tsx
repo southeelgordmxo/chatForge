@@ -13,13 +13,28 @@ const NavigationSidebar = async () => {
     return redirectToSignIn();
   }
 
-  const server = await db.server.findMany({
+  const servers = await db.server.findMany({
     where: {
       members: {
         some: {
           profileId: profile.id,
         },
       },
+      NOT: [{ name: "ChatForge" }],
+    },
+    orderBy: {
+      createdAt: "desc",
+    },
+  });
+
+  const server = await db.server.findFirst({
+    where: {
+      members: {
+        some: {
+          profileId: profile.id,
+        },
+      },
+      name: "ChatForge",
     },
     orderBy: {
       createdAt: "desc",
@@ -31,7 +46,14 @@ const NavigationSidebar = async () => {
       <NavigationAction />
       <Separator className="max-w-[47px] h-0.5 mx-auto dark:bg-zinc-800 bg-zinc-300" />
       <ScrollArea className="w-full flex-1">
-        {server.map((server) => (
+        {server && (
+          <NavigationItem
+            id={server?.id}
+            imageUrl={server?.imageUrl}
+            name={server?.name}
+          />
+        )}
+        {servers.map((server) => (
           <NavigationItem
             key={server.id}
             id={server.id}

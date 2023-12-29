@@ -14,7 +14,8 @@ export type ModalType =
   | "deleteChannel"
   | "messageFile"
   | "deleteMessage"
-  | "addFriend";
+  | "addFriend"
+  | "unFriend";
 
 interface ModalData {
   server?: Server;
@@ -25,6 +26,7 @@ interface ModalData {
   query?: Record<string, any>;
   profileId?: string;
   friends?: FriendsWithFriendOneAndFriendTwo[];
+  unfriends?: { friendOneId: string; friendTwoId: string };
   status?: "error" | "success" | "pending";
 }
 interface ModalStore {
