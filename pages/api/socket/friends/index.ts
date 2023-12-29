@@ -162,19 +162,6 @@ async function confirmFriendsRequest(
       });
     }
 
-    await db.server.update({
-      where: {
-        id: directId as string,
-      },
-      data: {
-        members: {
-          create: {
-            profileId,
-          },
-        },
-      },
-    });
-
     const friendOneKey = `fri:${friendOneId}:res`;
     res?.socket?.server?.io.emit(friendOneKey, friends);
 

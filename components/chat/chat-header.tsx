@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Channel,
   ChannelType,
@@ -18,6 +20,7 @@ import UserAvatar from "../user-avatar";
 import SocketIndicator from "../socket-indicator";
 import { checkFullName } from "@/lib/helper";
 import ChatVideoAndAudioButton from "./chat-video-and-audio-button";
+import { usePathname } from "next/navigation";
 
 interface ChatHeaderProps {
   serverId: string;
@@ -52,6 +55,9 @@ const ChatHeader = ({
   member,
   profile,
 }: ChatHeaderProps) => {
+  const path = usePathname();
+  const isGlobal = path?.includes("/direct/me");
+
   return (
     <div className="px-3 flex items-center gap-x-3 h-12 w-full font-semibold border-b dark:border-b-neutral-700 border-b-neutral-400">
       <MobileToggle serverId={serverId} />
@@ -77,7 +83,7 @@ const ChatHeader = ({
         {member ? (
           <p className="ml-2 flex items-center">
             {member && member.profile && checkFullName(member.profile.name)}
-            {member && memberIcons[member.role]}
+            {!isGlobal && member && memberIcons[member.role]}
           </p>
         ) : (
           profile && (

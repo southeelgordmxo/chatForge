@@ -25,7 +25,7 @@ const FriendConversationPage = async ({
     return redirectToSignIn();
   }
 
-  const currentMember = await db.member.findFirst({
+  const currentMemberOne = await db.member.findFirst({
     where: {
       serverId: params.directId,
       profileId: profile.id,
@@ -35,17 +35,28 @@ const FriendConversationPage = async ({
     },
   });
 
-  if (!currentMember) {
+  const currentMemberTwo = await db.member.findFirst({
+    where: {
+      serverId: params.directId,
+      profileId: params.friendId,
+    },
+    include: {
+      profile: true,
+    },
+  });
+
+  if (!currentMemberOne) {
+    return redirect("/");
+  }
+
+  if (!currentMemberTwo) {
     return redirect("/");
   }
 
   const conversation = await findOrCreateConversation(
-    currentMember.id,
-    params.friendId
+    currentMemberOne.id,
+    currentMemberTwo.id
   );
-  console.log(currentMember.id, params.friendId);
-
-  console.log(conversation, "conversation created");
 
   if (!conversation) {
     return redirect(`/direct/me/${params.directId}/friend-all`);
@@ -66,7 +77,7 @@ const FriendConversationPage = async ({
 
       <>
         <ChatMessage
-          member={currentMember}
+          member={currentMemberOne}
           name={otherMember.profile.name}
           type="member"
           apiUrl="/api/direct-messages"

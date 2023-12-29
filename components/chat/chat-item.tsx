@@ -27,7 +27,7 @@ import { useForm } from "react-hook-form";
 import { useModal } from "@/hook/use-modal-store";
 import qs from "query-string";
 import { toast } from "../ui/use-toast";
-import { useParams, useRouter } from "next/navigation";
+import { useParams, usePathname, useRouter } from "next/navigation";
 
 interface ChatItemProps {
   messageId: string;
@@ -68,9 +68,9 @@ const ChatItem = ({
   const { onOpen } = useModal();
   const router = useRouter();
   const params = useParams();
-
+  const path = usePathname();
+  const isGlobal = path?.includes("/direct/me");
   const fileExt = fileUrl?.split(".").pop();
-
   const isImage = fileUrl && checkImageType(fileExt);
   const isPDF = !isImage && fileUrl;
   const isOwner = currentMember?.id === member.id;
@@ -147,7 +147,7 @@ const ChatItem = ({
   }, [content]);
 
   function handleUserClick() {
-    if (isForFriendCon) {
+    if (isGlobal) {
       return;
     }
 
@@ -179,7 +179,7 @@ const ChatItem = ({
           >
             {checkFullName(member.profile.name)}
           </h3>
-          {!isForFriendCon && (
+          {!isGlobal && (
             <ActionTooltip description={member.role}>
               {memberIcons[member.role]}
             </ActionTooltip>
