@@ -1,6 +1,8 @@
+import FriendHeader from "@/components/friend/friend-header";
 import FriendPending from "@/components/friend/friend-pending";
 import { authProfile } from "@/lib/auth-profile";
 import { redirectToSignIn } from "@clerk/nextjs";
+import { UserIcon } from "lucide-react";
 
 import React from "react";
 
@@ -19,7 +21,10 @@ const PendingFriendsPage = async ({ params }: PendingFriendsPageProps) => {
 
   return (
     <div className="flex flex-col px-5 py-3">
-      <h2>Friends status</h2>
+      <FriendHeader directId={params.directId} serverId={params.directId} />
+      <h2 className="mt-4 flex items-center gap-2">
+        <UserIcon /> Friends status
+      </h2>
 
       <FriendPending profile={profile} directId={params.directId} />
     </div>

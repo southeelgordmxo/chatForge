@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Channel,
   ChannelType,
@@ -20,7 +18,7 @@ import UserAvatar from "../user-avatar";
 import SocketIndicator from "../socket-indicator";
 import { checkFullName } from "@/lib/helper";
 import ChatVideoAndAudioButton from "./chat-video-and-audio-button";
-import { usePathname } from "next/navigation";
+import FriendMobileToggle from "../friend/friend-mobile-toggle";
 
 interface ChatHeaderProps {
   serverId: string;
@@ -28,6 +26,7 @@ interface ChatHeaderProps {
   channel?: Channel;
   member?: Member & { profile: Profile };
   profile?: Profile;
+  directId?: string;
 }
 
 const channelIcons = {
@@ -54,13 +53,16 @@ const ChatHeader = ({
   type,
   member,
   profile,
+  directId,
 }: ChatHeaderProps) => {
-  const path = usePathname();
-  const isGlobal = path?.includes("/direct/me");
-
   return (
     <div className="px-3 flex items-center gap-x-3 h-12 w-full font-semibold border-b dark:border-b-neutral-700 border-b-neutral-400">
-      <MobileToggle serverId={serverId} />
+      {directId ? (
+        <FriendMobileToggle directId={directId} serverId={serverId} />
+      ) : (
+        <MobileToggle serverId={serverId} />
+      )}
+
       <p className="text-[19px] font-semibold flex items-center">
         {type === "channel" && channel && channelIcons[channel?.type]}
         {type === "member" && member ? (
@@ -83,7 +85,7 @@ const ChatHeader = ({
         {member ? (
           <p className="ml-2 flex items-center">
             {member && member.profile && checkFullName(member.profile.name)}
-            {!isGlobal && member && memberIcons[member.role]}
+            {!directId && member && memberIcons[member.role]}
           </p>
         ) : (
           profile && (
