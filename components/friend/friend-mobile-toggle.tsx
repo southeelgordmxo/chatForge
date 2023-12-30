@@ -1,26 +1,17 @@
-"use client";
-
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu } from "lucide-react";
 import NavigationSidebar from "../navigation/navigation-sidebar";
 import FriendSidebar from "./friend-sidebar";
-import { useEffect, useState } from "react";
 
 interface FriendMobileToggleProps {
-  directMessageName: string;
+  serverId: string;
+  directId: string;
 }
 
-const FriendMobileToggle = ({ directMessageName }: FriendMobileToggleProps) => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    setIsMounted(true);
-  }, []);
-
-  if (!isMounted) {
-    return null;
-  }
-
+const FriendMobileToggle = ({
+  directId,
+  serverId,
+}: FriendMobileToggleProps) => {
   return (
     <Sheet>
       <SheetTrigger>
@@ -30,7 +21,7 @@ const FriendMobileToggle = ({ directMessageName }: FriendMobileToggleProps) => {
         <div className="h-full  w-[72px]">
           <NavigationSidebar />
         </div>
-        <FriendSidebar directMessageName={directMessageName} />
+        <FriendSidebar serverId={serverId} directId={directId} />
       </SheetContent>
     </Sheet>
   );

@@ -5,15 +5,16 @@ import FriendMobileToggle from "./friend-mobile-toggle";
 import { authProfile } from "@/lib/auth-profile";
 
 interface FriendHeaderProps {
-  directMessageName: string;
+  directId: string;
+  serverId: string;
 }
 
-const FriendHeader = async ({ directMessageName }: FriendHeaderProps) => {
+const FriendHeader = async ({ directId, serverId }: FriendHeaderProps) => {
   const user = await authProfile();
 
   return (
     <div className="px-3 flex items-center gap-x-3 h-12 w-full font-semibold border-b dark:border-b-neutral-700 border-b-neutral-400">
-      <FriendMobileToggle directMessageName={directMessageName} />
+      <FriendMobileToggle directId={directId} serverId={serverId} />
       <div className="text-[19px] font-semibold flex items-center">
         {user && (
           <UserAvatar
@@ -24,7 +25,9 @@ const FriendHeader = async ({ directMessageName }: FriendHeaderProps) => {
         )}
 
         {user && (
-          <p className="ml-2 flex items-center">{checkFullName(user.name)}</p>
+          <p className="ml-2 flex items-center">
+            {checkFullName(user.name)} (Me)
+          </p>
         )}
       </div>
 

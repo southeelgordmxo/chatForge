@@ -72,6 +72,7 @@ const FriendConversationPage = async ({
       <ChatHeader
         serverId={params.directId}
         type="member"
+        directId={params.directId}
         member={otherMember}
       />
 

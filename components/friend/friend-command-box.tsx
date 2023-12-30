@@ -60,12 +60,15 @@ const FriendCommandBox = ({ users, status }: FriendCommandBoxProps) => {
 
   return (
     <Command>
-      <CommandInput placeholder="Find user..." />
+      <CommandInput
+        disabled={status === "pending" ? true : false}
+        placeholder="Find user..."
+      />
       <CommandList>
         <CommandEmpty>No users found.</CommandEmpty>
         {status === "pending"
           ? [1, 2, 3].map((n) => (
-              <Skeleton key={n} className="w-full h-[40px]" />
+              <Skeleton key={n} className="w-full h-[40px] mb-3" />
             ))
           : users?.map((user) => (
               <CommandItem key={user.userId}>
